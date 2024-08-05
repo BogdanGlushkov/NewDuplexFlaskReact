@@ -1,0 +1,17 @@
+.user-row {
+    display: flex;
+    align-items: center;
+  }
+  
+  .user-name {
+    width: 100px;
+    text-align: left;
+    padding: 10px;
+    border: 1px solid #ccc;
+    background-color: #f9f9f9;
+  }
+  
+  .day-cell.shift {
+    background-color: lightgreen;
+  }
+  

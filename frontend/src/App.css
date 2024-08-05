@@ -1,0 +1,155 @@
+:root {
+  --main-block-height: 60px;
+  --main-block-width: 40px;
+  --days-in-month: 31;
+  --main-margin-for-block: 1px;
+}
+
+*{
+  box-sizing: border-box;
+}
+
+.App {
+  font-family: Arial, sans-serif;
+  font-size: 12px;
+  display: flex;
+  flex-direction: column;
+  width: auto;
+  margin: 0px 10px;
+}
+
+.calendar-grid {
+  display: grid;
+  grid-template-columns: repeat(var(--days-in-month), 1fr) 1fr;
+  width: fit-content;
+  justify-items: center;
+  max-width: calc(var(--main-block-width) * var(--days-in-month) + var(--days-in-month) * var(--main-margin-for-block));
+}
+
+.header-row {
+  display: contents;
+}
+
+.header-cell {
+  text-align: center;
+  padding: 5px;
+  font-weight: bold;
+}
+
+.user-row {
+  display: contents;
+}
+
+.user-name {
+  background-color: #e0e0e0;
+  padding: 5px;
+  text-align: center;
+  font-weight: bold;
+  height: var(--main-block-height);
+
+  align-items: center;
+  justify-content: center;
+  display: flex;
+  margin-right: 1px;
+}
+
+.day-cell {
+  text-align: left;
+  padding: 4px 3px;
+  cursor: pointer;
+  height: var(--main-block-height);
+  width:  var(--main-block-width);
+  border-radius: 4px;
+  margin: 2px var(--main-margin-for-block);
+  user-select: none;
+}
+
+.day-cell.shift {
+  background-color: #90ee90;
+}
+
+.users-column {
+  display: block;
+}
+
+.header-contents {
+  margin-top: 10px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.header-contents span {
+  font-weight: 400;
+  font-size: 16px;
+  margin: 10px;
+}
+
+.header-contents button {
+  margin: 2px;
+}
+
+.container-flex {
+  display: flex;
+  flex-direction: row;
+  margin-top: 15px;
+}
+
+.left-content {
+  margin: 0 40px;
+}
+
+.right-content {
+  position: absolute;
+  top: 80px;
+  right: 150px;
+}
+
+.project-filter {
+  margin-left: 30px;
+  align-items: center;
+  display: flex;
+}
+
+.project-filter label {
+  margin-right: 5px;
+}
+
+.Add_project {
+  margin-top: 10px;
+  display: flex;
+  flex-direction: column;
+}
+
+.Add_project input {
+  margin-top: 10px;
+}
+
+.Add_project button {
+  margin-top: 5px;
+}
+
+.Add_project label{
+  margin-top: 5px;
+}
+
+.left-content-header {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+}
+
+.right-content-header {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  margin-right: 15%;
+}
+
+.right-content-header p {
+  margin-right: 10px;
+}
+
+.right-content-header a {
+  margin-right: 10px;
+}

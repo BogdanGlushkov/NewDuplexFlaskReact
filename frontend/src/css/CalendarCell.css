@@ -1,0 +1,11 @@
+.day-cell {
+    border: 1px solid #ccc;
+    padding: 10px;
+    text-align: center;
+    cursor: pointer;
+  }
+
+  .day-cell.selected {
+    padding: 3px 5px 5px 3px;
+  }
+  
