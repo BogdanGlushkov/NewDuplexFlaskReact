@@ -13,7 +13,7 @@ from .Auth.views import auth as auth_blueprint
 
 def create_app():
     app = Flask(__name__)
-    CORS(app)
+    CORS(app, resources={r"/api/*": {"origins": "http://olegperm.fvds.ru"}})
     app.config.from_object(Config)
     
     jwt = JWTManager(app)
