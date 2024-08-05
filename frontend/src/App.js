@@ -9,7 +9,7 @@ import PrivateRoute from './pages/PrivateRoute';
 import ExistingAccounts from './pages/ExistingAccounts';
 import './App.css';
 
-export const BASE_URL = "http://127.0.0.1:5000/api";
+export const BASE_URL = "http://92.63.106.240/api";
 
 const App = () => {
   return (
