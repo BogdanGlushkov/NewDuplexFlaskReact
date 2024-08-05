@@ -5,4 +5,4 @@ RUN pip install -r req.txt
 
 COPY . .
 
-CMD [ "gunicorn", "--bind", "0.0.0.0:5000", "wsgi:app" ]
+CMD [ "python", "run.py" ]
