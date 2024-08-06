@@ -1,6 +1,7 @@
 from flask import Blueprint, request, jsonify, render_template, redirect, url_for
 from datetime import datetime, time, timedelta, timezone
 import pandas as pd
+from sqlalchemy.orm import joinedload
 
 from app.models.User import User, Schedule
 from app.models.Auth import UserAcc
@@ -24,13 +25,10 @@ def get_users():
     start_query = datetime.fromisoformat(start_query)
     end_query = datetime.fromisoformat(end_query)
 
-    active_accs = UserAcc.query.filter_by(isActive=True).all()
-    users = []
-    for acc in active_accs:
-        if acc.user_id:
-            user = User.query.filter_by(id=acc.user_id).first()
-            if user:
-                users.append(user)
+    active_accs = UserAcc.query.options(joinedload(UserAcc.user)).filter_by(isActive=True).all()
+    users = [acc.user for acc in active_accs if acc.user]
+
+
     # Фильтруем расписания по году и месяцу
     filtered_users = []
     for user in users:
@@ -154,6 +152,7 @@ def update_schedule(username):
         print(f'Ошибка при обновлении расписания: {str(e)}')
         db.session.rollback()
         return jsonify({'error': 'Произошла ошибка при обновлении расписания'}), 500
+
 
 
 # @user.route('/')

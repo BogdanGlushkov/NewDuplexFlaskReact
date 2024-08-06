@@ -1,6 +1,7 @@
 from flask import Blueprint, request, jsonify
 
 from app.models.Auth import Role, UserAcc
+from app.models.User import User
 
 from flask_jwt_extended import create_access_token, jwt_required, get_jwt_identity
 from app.extensions import db, bcrypt
@@ -40,11 +41,18 @@ def add_user():
     prefix = data['prefix']
     role_name = data.get('role', 'user')
     role = Role.query.filter_by(name=role_name).first()
+    user_id = data.get('user')
     
     if UserAcc.query.filter_by(username=username).first():
         return jsonify({'message': 'User already exists'}), 400
+    if user_id != "":
+        user = User.query.get(user_id) if user_id else None
+        if user_id and not user:
+            return jsonify({'message': 'Invalid user_id'}), 400
+    else:
+        user = None
 
-    new_user = UserAcc(username=username, password=password, role=role, prefix=prefix)
+    new_user = UserAcc(username=username, password=password, role=role, prefix=prefix, user_id=user.id if user else None)
     db.session.add(new_user)
     db.session.commit()
 
@@ -71,7 +79,7 @@ def update_user(user_id):
             user.password = bcrypt.generate_password_hash(data['password'])  # Ensure to hash passwords
     user.role_id = Role.query.filter_by(name=data.get('role')).first().id
     user.prefix = data.get('prefix', user.prefix)
-    user.user_id = data.get('user', user.user_id)
+    user.user_id = int(data.get('user', user.user_id))
     user.isActive = data.get('is_active', user.isActive)
     
     db.session.commit()
