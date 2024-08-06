@@ -11,7 +11,7 @@ from config import Config
 auth = Blueprint('auth', __name__, template_folder='templates')
     
     
-@auth.route('/api/login', methods=['POST'])
+@auth.route('/login', methods=['POST'])
 def login():
     data = request.json
     username = data.get('username')
@@ -25,7 +25,7 @@ def login():
 
     return jsonify({'error': 'Invalid credentials'}), 401
 
-@auth.route('/api/users_account', methods=['POST'])
+@auth.route('/users_account', methods=['POST'])
 @jwt_required()
 def add_user():
     current_user_id = get_jwt_identity()
@@ -50,14 +50,14 @@ def add_user():
 
     return jsonify({'message': 'User added successfully'}), 201
 
-@auth.route('/api/users_account', methods=['GET'])
+@auth.route('/users_account', methods=['GET'])
 @jwt_required()
 def get_users():
     users = UserAcc.query.all()
     user_list = [{'id': user.id, 'username': user.username, 'role': user.role.name, 'prefix': user.prefix, 'operator_id': user.user_id, "isActive": user.isActive} for user in users]
     return jsonify(user_list), 200
 
-@auth.route('/api/users_account/<int:user_id>', methods=['PUT'])
+@auth.route('/users_account/<int:user_id>', methods=['PUT'])
 @jwt_required()
 def update_user(user_id):
     data = request.json
@@ -77,7 +77,7 @@ def update_user(user_id):
     db.session.commit()
     return jsonify({'message': 'User updated successfully'}), 200
 
-@auth.route('/api/users_account/<int:user_id>', methods=['DELETE'])
+@auth.route('/users_account/<int:user_id>', methods=['DELETE'])
 @jwt_required()
 def delete_user(user_id):
     user = UserAcc.query.get(user_id)

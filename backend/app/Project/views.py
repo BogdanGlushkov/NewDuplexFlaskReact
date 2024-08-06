@@ -5,7 +5,7 @@ from app.extensions import db
 
 project = Blueprint('project', __name__, template_folder='templates')
 
-@project.route('/api/projects', methods=['POST'])
+@project.route('/projects', methods=['POST'])
 def create_project():
     data = request.json
     name = data.get('name')
@@ -20,13 +20,13 @@ def create_project():
 
     return jsonify(project.to_dict()), 201
 
-@project.route('/api/projects', methods=['GET'])
+@project.route('/projects', methods=['GET'])
 def get_project():
     projects = Project.query.all()
     project_list = [project.to_dict() for project in projects]
     return jsonify(project_list)
 
-@project.route('/api/projects/<int:project_id>', methods=['PUT'])
+@project.route('/projects/<int:project_id>', methods=['PUT'])
 def update_project(project_id):
     data = request.json
     project = Project.query.get_or_404(project_id)
@@ -49,7 +49,7 @@ def update_project(project_id):
         'users': [{'id': user.id, 'name': user.name} for user in project.users]  # Возвращаем полный объект пользователя
     })
     
-@project.route('/api/projects/<int:project_id>', methods=['DELETE'])
+@project.route('/projects/<int:project_id>', methods=['DELETE'])
 def delete_project(project_id):
     project = Project.query.get_or_404(project_id)
     if project is None:

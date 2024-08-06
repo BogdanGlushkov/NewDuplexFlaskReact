@@ -10,7 +10,7 @@ import json
 user = Blueprint('user', __name__, template_folder='templates')
 
 
-@user.route('/api/users', methods=['GET'])
+@user.route('/users', methods=['GET'])
 def get_users():
     start_query = request.args.get('start')
     end_query = request.args.get('end')
@@ -53,7 +53,7 @@ def get_users():
     return jsonify(filtered_users)
 
 
-@user.route('/api/users_list', methods=['GET'])
+@user.route('/users_list', methods=['GET'])
 def get_users_list():
     # Получаем всех пользователей
     users = User.query.all()
@@ -64,7 +64,7 @@ def get_users_list():
     return jsonify(users_list)
 
 
-@user.route('/api/users', methods=['POST'])
+@user.route('/users', methods=['POST'])
 def add_users():
     if request.method == 'POST':
         try:
@@ -91,14 +91,14 @@ def add_users():
             db.session.rollback()
             return jsonify({'error': 'Произошла ошибка при добавлении пользователя'}), 500
 
-@user.route('/api/user/<name>', methods=['GET'])
+@user.route('/user/<name>', methods=['GET'])
 def get_user(name):
     user = User.query.filter_by(name=name).first()
     if user is not None:
         return jsonify(user.to_dict())
     return jsonify({'error': 'User not found'}), 404
 
-@user.route('/api/user/<username>/schedule', methods=['POST'])
+@user.route('/user/<username>/schedule', methods=['POST'])
 def update_schedule(username):
     try:
         # Получаем данные из запроса
