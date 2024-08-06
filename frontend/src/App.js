@@ -9,7 +9,7 @@ import PrivateRoute from './pages/PrivateRoute';
 import ExistingAccounts from './pages/ExistingAccounts';
 import './App.css';
 
-export const BASE_URL = "http://172.18.0.2:5000/api";
+export const BASE_URL = "http://olegperm.fvds.ru/api";
 
 const App = () => {
   return (
