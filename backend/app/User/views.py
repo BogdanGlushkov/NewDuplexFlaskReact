@@ -180,9 +180,9 @@ def update_schedule(username):
 #     # return render_template('User/index.html', users=users)
 
 
-# @user.route('/addexcel', methods=['GET', 'POST'])
-# def upload_file():
-#     return render_template('User/add_excel.html')
+@user.route('/addexcel', methods=['GET', 'POST'])
+def upload_file():
+    return render_template('User/add_excel.html')
 
 
 # @user.route('/addSchedule', methods=['GET', 'POST'])
@@ -192,29 +192,29 @@ def update_schedule(username):
 #     return render_template('User/form_schedule.html', form=form)
 
 
-# @user.route('/data', methods=['GET', 'POST'])
-# def data_uploading():
-#     if request.method == 'POST':
-#         file = request.form['upload-file']
-#         data = pd.read_excel(file)
-#         print(data.head(6))
-#         print(data.tail(5))
+@user.route('/data', methods=['GET', 'POST'])
+def data_uploading():
+    if request.method == 'POST':
+        file = request.form['upload-file']
+        data = pd.read_excel(file)
+        print(data.head(6))
+        print(data.tail(5))
 
-#         for i in range(4, len(data)):
-#             metrica = data.iloc[i, 0:19].tolist()
-#             # print("---")
-#             # print(f"Metrica: {metrica}")
+        for i in range(4, len(data)):
+            metrica = data.iloc[i, 0:19].tolist()
+            # print("---")
+            # print(f"Metrica: {metrica}")
             
-#             if isinstance(metrica[1], str):
-#                 # SheetData = metrica[0]
+            if isinstance(metrica[1], str):
+                # SheetData = metrica[0]
 
-#                 this_user = db.session.execute(db.select(User.id, User.name).filter(User.name == metrica[1])).all()
-#                 if not this_user:
-#                     print(metrica[1])
-#                     new_operator = User(name=metrica[1])
-#                     db.session.add(new_operator)
-#                     db.session.commit()
-#                     print("Successfully added new operator")
+                this_user = db.session.execute(db.select(User.id, User.name).filter(User.name == metrica[1])).all()
+                if not this_user:
+                    print(metrica[1])
+                    new_operator = User(name=metrica[1])
+                    db.session.add(new_operator)
+                    db.session.commit()
+                    print("Successfully added new operator")
                     # this_user = db.session.execute(db.select(Users.id, Users.name).filter(Users.name == metrica[1])).all()
                 # operator_id = this_user[0].id   
                 
