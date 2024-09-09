@@ -101,9 +101,8 @@ def create_app():
                     'Оператор114',
                     'Оператор16'
                     ]
-        for operator in operators:    
-            this_user = User.query.get(User.name == operator)
-            if not this_user:
+        for operator in operators:   
+            if not User.query.filter_by(User.name == operator).first():
                 print(operator)
                 new_operator = User(name=operator)
                 db.session.add(new_operator)
