@@ -250,7 +250,7 @@ const ExistingAccounts = () => {
                             <td style={{ border: '1px solid #ddd', padding: '8px' }}>{getOperatorNameById(user.operator_id)}</td>
                             <td style={{ border: '1px solid #ddd', padding: '8px' }}>{user.role}</td>
                             <td style={{ border: '1px solid #ddd', padding: '8px' }}>{user.isActive ? '✔' : '✘'}</td>
-                            <td style={{ border: '1px solid #ddd', padding: '8px' }}>{getUserProjects(user.id)}</td>
+                            <td style={{ border: '1px solid #ddd', padding: '8px' }}>{getUserProjects(user.operator_id)}</td>
                             <td style={{ border: '1px solid #ddd', padding: '8px' }}>
                                 {user.username !== 'root' && (
                                     <>
