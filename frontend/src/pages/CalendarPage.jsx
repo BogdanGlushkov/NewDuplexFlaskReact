@@ -21,6 +21,8 @@ const generateSchedule = (date) => {
 };
 
 const fillEmptySchedule = (existingSchedule, date) => {
+  const daysInMonth = getDaysInMonth(date);
+  document.documentElement.style.setProperty('--days-in-month', daysInMonth);
   const generatedSchedule = generateSchedule(date);
   const filledSchedule = generatedSchedule.map(generatedDay => {
     const existingDay = existingSchedule.find(day => isSameDay(generatedDay.date, new Date(day.date)));

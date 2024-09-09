@@ -9,8 +9,6 @@ const PrivateRoute = ({ element: Component, roles }) => {
   
   const { isAuthenticated, userRole, userName } = useAuth(token);
 
-  console.log(userRole);
-
   if (!isAuthenticated) {
     return <Navigate to="/login" state={{ from: location }} />;
   }
@@ -30,7 +28,6 @@ const useAuth = (token) => {
 
   try {
     const decodedToken = jwtDecode(token);
-    console.log('Decoded Token:', decodedToken); // Добавьте это для отладки
 
     const isAuthenticated = Date.now() < decodedToken.exp * 1000;
 

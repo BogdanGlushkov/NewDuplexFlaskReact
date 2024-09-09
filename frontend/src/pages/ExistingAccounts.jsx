@@ -15,10 +15,12 @@ const ExistingAccounts = () => {
     const [error, setError] = useState('');
     const [loading, setLoading] = useState(false);
     const [operators, setOperators] = useState([]);
+    const [projects, setProjects] = useState([]);
 
     useEffect(() => {
         fetchUsers();
         fetchOperators();
+        fetchProjects();
     }, []);
 
     const fetchUsers = async () => {
@@ -31,8 +33,8 @@ const ExistingAccounts = () => {
             });
             setUsers(response.data);
         } catch (err) {
-            console.error('Error fetching users:', err);
-            setError('Failed to fetch users');
+            console.error('Произошла ошибка при загрузке пользователей:', err);
+            setError('Произошла ошибка при загрузке пользователей - fetchUsers');
         }
     };
 
@@ -46,8 +48,23 @@ const ExistingAccounts = () => {
             });
             setOperators(response.data);
         } catch (err) {
-            console.error('Error fetching operators:', err);
-            setError('Failed to fetch operators');
+            console.error('Произошла ошибка при загрузке операторов:', err);
+            setError('Произошла ошибка при загрузке операторов - fetchOperators');
+        }
+    };
+
+    const fetchProjects = async () => {
+        const token = localStorage.getItem('token');
+        try {
+            const response = await axios.get(`${BASE_URL}/projects`, {
+                headers: {
+                    Authorization: `Bearer ${token}`
+                }
+            });
+            setProjects(response.data);
+        } catch (err) {
+            console.error('Произошла ошибка при загрузке проектов:', err);
+            setError('Произошла ошибка при загрузке проектов - fetchProjects');
         }
     };
 
@@ -74,17 +91,17 @@ const ExistingAccounts = () => {
             setIsActive(true); // Reset activity status
             setSelectedUser(null);
             fetchUsers();
-            alert(selectedUser ? 'User updated successfully' : 'User added successfully');
+            alert(selectedUser ? 'Пользователь успешно обновлен' : 'Пользователь добавлен успешно');
         } catch (err) {
-            setError('Failed to add or update user. Please check the details and try again.');
-            console.error('Error adding or updating user:', err);
+            setError('Возникла ошибка при добавлении пользователя. Пожалуйста проверьте все и попробуйте еще раз.');
+            console.error('Возникла ошибка при добавлении иди изменении пользователя - handleAddOrUpdateUser:', err);
         } finally {
             setLoading(false);
         }
     };
 
     const handleDeleteUser = async (userId) => {
-        if (window.confirm('Are you sure you want to delete this user?')) {
+        if (window.confirm('Вы уверены что хотите удалить этого пользователя?')) {
             const token = localStorage.getItem('token');
             try {
                 await axios.delete(`${BASE_URL}/users_account/${userId}`, {
@@ -93,10 +110,10 @@ const ExistingAccounts = () => {
                     }
                 });
                 fetchUsers();
-                alert('User deleted successfully');
+                alert('Пользователь удален успешно');
             } catch (err) {
-                console.error('Error deleting user:', err);
-                alert('Failed to delete user');
+                console.error('Ошибка при удалении пользователя:', err);
+                alert('Ошибка при удалении пользователя - handleDeleteUser');
             }
         }
     };
@@ -115,6 +132,11 @@ const ExistingAccounts = () => {
     const getOperatorNameById = (id) => {
         const operator = operators.find(op => op.id === id);
         return operator ? operator.name : 'Неизвестный оператор';
+    };
+
+    const getUserProjects = (userId) => {
+        const userProjects = projects.filter(project => project.users.some(user => user.id === userId));
+        return userProjects.map(project => project.name).join(', ');
     };
 
     return (
@@ -203,7 +225,7 @@ const ExistingAccounts = () => {
                     disabled={loading} 
                     style={{ width: '100%', padding: '10px', backgroundColor: '#007bff', color: '#fff', border: 'none', borderRadius: '4px' }}
                 >
-                    {loading ? 'Processing...' : selectedUser ? 'Обновить' : 'Добавить'}
+                    {loading ? 'Загрузка...' : selectedUser ? 'Обновить' : 'Добавить'}
                 </button>
             </form>
 
@@ -216,6 +238,7 @@ const ExistingAccounts = () => {
                         <th style={{ border: '1px solid #ddd', padding: '8px' }}>Оператор</th>
                         <th style={{ border: '1px solid #ddd', padding: '8px' }}>Роль</th>
                         <th style={{ border: '1px solid #ddd', padding: '8px' }}>Активность</th>
+                        <th style={{ border: '1px solid #ddd', padding: '8px' }}>Проекты</th>
                         <th style={{ border: '1px solid #ddd', padding: '8px' }}>Действия</th>
                     </tr>
                 </thead>
@@ -227,6 +250,7 @@ const ExistingAccounts = () => {
                             <td style={{ border: '1px solid #ddd', padding: '8px' }}>{getOperatorNameById(user.operator_id)}</td>
                             <td style={{ border: '1px solid #ddd', padding: '8px' }}>{user.role}</td>
                             <td style={{ border: '1px solid #ddd', padding: '8px' }}>{user.isActive ? '✔' : '✘'}</td>
+                            <td style={{ border: '1px solid #ddd', padding: '8px' }}>{getUserProjects(user.id)}</td>
                             <td style={{ border: '1px solid #ddd', padding: '8px' }}>
                                 {user.username !== 'root' && (
                                     <>

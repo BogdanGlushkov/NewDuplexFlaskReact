@@ -27,3 +27,6 @@ friends.db
 # Dependency directories
 node_modules/
 /dist/
+
+views — USER.py
+views — Auth.py

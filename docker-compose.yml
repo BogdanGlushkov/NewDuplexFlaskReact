@@ -17,6 +17,10 @@ services:
   backend:
     build:
       context: ./backend
+    environment:
+      - DATABASE_URL=postgresql://duplexroot:b26032e8527d4991@db:5432/calendarDB
+    depends_on:
+      - db
     networks:
       - dev
 
@@ -25,3 +29,17 @@ services:
       context: ./frontend
     networks:
       - dev
+
+  db:
+    image: postgres:13
+    environment:
+      POSTGRES_USER: duplexroot
+      POSTGRES_PASSWORD: b26032e8527d4991
+      POSTGRES_DB: calendarDB
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+    networks:
+      - dev
+
+volumes:
+  postgres_data:
