@@ -82,16 +82,6 @@ def process_file(file_path):
 
     return data.to_dict(orient='records')
 
-@user.route('/read_excel', methods=['GET'])
-def read_excel():
-    file_path = os.path.join(app.config['UPLOAD_FOLDER'], 'your_file.xlsx')
-    if not os.path.isfile(file_path):
-        return jsonify({'error': 'File not found'}), 404
-
-    data = process_file(file_path)
-    return jsonify(data)
-
-
 @user.route('/users', methods=['POST'])
 def add_users():
     if request.method == 'POST':
