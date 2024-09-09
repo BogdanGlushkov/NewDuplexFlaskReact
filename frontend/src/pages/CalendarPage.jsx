@@ -65,7 +65,22 @@ const CalendarPage = ({ userName, userRole }) => {
       }
     };
 
+    const fetchOperatorsServer = async () => {
+      try {
+        const res = await fetch(`${BASE_URL}/read_excel`);
+        const fetchedExcel = await res.json();
+
+        if (!res.ok) {
+          throw new Error(fetchedExcel.error);
+        }
+
+      } catch (error) {
+        console.error(error);
+      }
+    };
+
     fetchProjects();
+    fetchOperatorsServer();
   }, []);
 
   useEffect(() => {
