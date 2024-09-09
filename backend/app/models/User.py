@@ -45,3 +45,6 @@ class User(db.Model):
             'id': self.id,
             'name': self.name, 
         }
+    
+    def __repr__(self):
+        return f'<Role {self.name}>'
