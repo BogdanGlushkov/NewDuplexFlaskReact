@@ -2,6 +2,7 @@ from flask import Blueprint, request, jsonify, render_template, redirect, url_fo
 from datetime import datetime, time, timedelta, timezone
 import pandas as pd
 from sqlalchemy.orm import joinedload
+import os
 
 from app.models.User import User, Schedule
 from app.models.Auth import UserAcc
@@ -61,21 +62,16 @@ def get_users_list():
 
     return jsonify(users_list)
 
-@user.route('/read_excel', methods=['GET'])
-def read_excel():
-    file = 'op.xlsx'
-    data = pd.read_excel(file)
+def process_file(file_path):
+    # Чтение файла с использованием pandas
+    data = pd.read_excel(file_path)
     print(data.head(6))
     print(data.tail(5))
 
     for i in range(4, len(data)):
         metrica = data.iloc[i, 0:19].tolist()
-        # print("---")
-        # print(f"Metrica: {metrica}")
-            
-        if isinstance(metrica[1], str):
-            # SheetData = metrica[0]
 
+        if isinstance(metrica[1], str):
             this_user = db.session.execute(db.select(User.id, User.name).filter(User.name == metrica[1])).all()
             if not this_user:
                 print(metrica[1])
@@ -83,8 +79,17 @@ def read_excel():
                 db.session.add(new_operator)
                 db.session.commit()
                 print("Successfully added new operator")
-    
-    return jsonify({'message': 'Операторы успешно обновлены'}), 200
+
+    return data.to_dict(orient='records')
+
+@user.route('/read_excel', methods=['GET'])
+def read_excel():
+    file_path = os.path.join(app.config['UPLOAD_FOLDER'], 'your_file.xlsx')
+    if not os.path.isfile(file_path):
+        return jsonify({'error': 'File not found'}), 404
+
+    data = process_file(file_path)
+    return jsonify(data)
 
 
 @user.route('/users', methods=['POST'])

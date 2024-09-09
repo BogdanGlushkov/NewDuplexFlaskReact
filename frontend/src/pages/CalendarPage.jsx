@@ -69,11 +69,14 @@ const CalendarPage = ({ userName, userRole }) => {
       try {
         const res = await fetch(`${BASE_URL}/read_excel`);
         const fetchedExcel = await res.json();
-
+    
         if (!res.ok) {
           throw new Error(fetchedExcel.error);
         }
-
+    
+        console.log(fetchedExcel);
+        // Обработка данных из Excel-файла
+    
       } catch (error) {
         console.error(error);
       }
