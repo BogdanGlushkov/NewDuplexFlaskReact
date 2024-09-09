@@ -102,7 +102,7 @@ def create_app():
                     'Оператор16'
                     ]
         for operator in operators:    
-            this_user = db.session.execute(db.select(User.id, User.name).filter(User.name == operator)).all()
+            this_user = User.query.get(User.name == operator)
             if not this_user:
                 print(operator)
                 new_operator = User(name=operator)

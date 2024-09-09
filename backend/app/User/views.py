@@ -62,26 +62,6 @@ def get_users_list():
 
     return jsonify(users_list)
 
-def process_file(file_path):
-    # Чтение файла с использованием pandas
-    data = pd.read_excel(file_path)
-    print(data.head(6))
-    print(data.tail(5))
-
-    for i in range(4, len(data)):
-        metrica = data.iloc[i, 0:19].tolist()
-
-        if isinstance(metrica[1], str):
-            this_user = db.session.execute(db.select(User.id, User.name).filter(User.name == metrica[1])).all()
-            if not this_user:
-                print(metrica[1])
-                new_operator = User(name=metrica[1])
-                db.session.add(new_operator)
-                db.session.commit()
-                print("Successfully added new operator")
-
-    return data.to_dict(orient='records')
-
 @user.route('/users', methods=['POST'])
 def add_users():
     if request.method == 'POST':
