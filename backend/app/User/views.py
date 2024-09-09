@@ -83,6 +83,8 @@ def read_excel():
                 db.session.add(new_operator)
                 db.session.commit()
                 print("Successfully added new operator")
+    
+    return jsonify({'message': 'Операторы успешно обновлены'}), 200
 
 
 @user.route('/users', methods=['POST'])
