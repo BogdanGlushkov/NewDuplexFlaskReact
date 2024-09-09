@@ -276,7 +276,7 @@ def data_uploading():
                 # else:
                 #     print('Экземпляр модели Metrics уже существует')
             
-        # return render_template('User/data.html', data=data.to_dict())
+        return render_template('User/data.html', data=data.to_dict())
     
     
 # @user.route('/load_schedules')
