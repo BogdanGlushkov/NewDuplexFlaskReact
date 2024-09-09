@@ -135,7 +135,7 @@ const ExistingAccounts = () => {
     };
 
     const getUserProjects = (userId) => {
-        const userProjects = projects.filter(project => project.users.some(user => user.operator_id === userId));
+        const userProjects = projects.filter(project => project.users.some(user => user.operator_id-1 === userId));
         return userProjects.map(project => project.name).join(', ');
     };
 
