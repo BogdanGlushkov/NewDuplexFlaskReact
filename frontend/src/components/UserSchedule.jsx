@@ -11,7 +11,6 @@ const UserSchedule = ({ user, daysInMonth, onCellClick, selectedCells = [], curr
         const shift = user.schedule.find(s => isSameDay(s.date, date))?.shift || ' ';
         const type = user.schedule.find(s => isSameDay(s.date, date))?.type || ' ';
         const isSelected = selectedCells.some(cell => isSameDay(cell.date, date) && cell.user === user.name);
-        console.log(shift);
         return (
           <CalendarCell
             key={date.getTime()}
