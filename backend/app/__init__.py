@@ -11,7 +11,7 @@ from .User.views import user as user_blueprint
 from .Project.views import project as project_blueprint
 from .Auth.views import auth as auth_blueprint
 
-from root_env import ROOT_SECRET_KEY
+from .root_env import ROOT_SECRET_KEY
 from dotenv import load_dotenv
 
 load_dotenv()
