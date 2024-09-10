@@ -11,7 +11,7 @@ from .User.views import user as user_blueprint
 from .Project.views import project as project_blueprint
 from .Auth.views import auth as auth_blueprint
 
-from .root_env import ROOT_SECRET_KEY
+import os
 from dotenv import load_dotenv
 
 load_dotenv()
@@ -42,7 +42,7 @@ def create_app():
 
         # Проверьте наличие администратора
         if not UserAcc.query.filter_by(role_id=admin_role.id).first():
-            hashed_password = bcrypt.generate_password_hash(ROOT_SECRET_KEY).decode('utf-8')
+            hashed_password = bcrypt.generate_password_hash(os.environ.get('ROOT_SECRET_KEY')).decode('utf-8')
             admin_user = UserAcc(username='root', prefix='Администратор', password=hashed_password, role_id=admin_role.id)
             db.session.add(admin_user)
             db.session.commit()
