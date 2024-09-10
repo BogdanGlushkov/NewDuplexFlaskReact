@@ -16,7 +16,7 @@ pip-selfcheck.json
 
 # Environment variables
 .env
-.root_env
+root_env.py
 
 # Database
 friends.db
