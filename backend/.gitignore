@@ -16,7 +16,6 @@ pip-selfcheck.json
 
 # Environment variables
 .env
-root_env.py
 
 # Database
 friends.db
@@ -30,3 +29,4 @@ node_modules/
 
 views — USER.py
 views — Auth.py
+test.py
