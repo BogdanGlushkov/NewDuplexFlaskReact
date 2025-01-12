@@ -4,7 +4,7 @@ class Metrics(db.Model):
     id = db.Column(db.Integer, primary_key=True)
     Data = db.Column(db.DateTime, nullable=False)
     user_id = db.Column(db.Integer, db.ForeignKey('user.id'), nullable=False)
-    user = db.relationship('User', backref=db.backref('Accounts', lazy=True))
+    user = db.relationship('User', backref=db.backref('metrics', lazy=True))
     StatusTimeInPlace = db.Column(db.Time)
     StatusTimeBusy = db.Column(db.Time)
     StatusTimeBreak = db.Column(db.Time)
