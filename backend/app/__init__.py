@@ -5,11 +5,11 @@ from flask_cors import CORS
 from flask_jwt_extended import JWTManager
 
 from app.models.Auth import Role, UserAcc
-from app.models.User import User
 
 from .User.views import user as user_blueprint
 from .Project.views import project as project_blueprint
 from .Auth.views import auth as auth_blueprint
+from .CSI.views import csi as csi_blueprint
 
 import os
 from dotenv import load_dotenv
@@ -51,5 +51,6 @@ def create_app():
     app.register_blueprint(user_blueprint)
     app.register_blueprint(project_blueprint)
     app.register_blueprint(auth_blueprint)
+    app.register_blueprint(csi_blueprint)
 
     return app
