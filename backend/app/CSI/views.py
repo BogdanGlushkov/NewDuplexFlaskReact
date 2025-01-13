@@ -33,11 +33,14 @@ def add_metrika():
                 return jsonify({"error": "Missing required fields: Date or Operator"}), 404
             
             if not User.query.filter_by(name=user).first():
-                print(user)
-                new_operator = User(name=user)
-                db.session.add(new_operator)
-                db.session.commit()
-                print("Successfully added new operator")
+                try:
+                    print(user)
+                    new_operator = User(name=user)
+                    db.session.add(new_operator)
+                    db.session.commit()
+                    print("Successfully added new operator")
+                except Exception as e:
+                    return jsonify({"error": str(e)}), 510
             
             user = db.session.execute(db.select(User.id, User.name).filter(User.name == user)).first()
             print(user)
@@ -94,9 +97,12 @@ def add_metrika():
                                         StatusTimeGone=StatusTimeGone, StatusTimeNotAvailable=StatusTimeNotAvailable, PercentInPlace=PercentInPlace, CountIncoming=CountIncoming,
                                         LenghtIncoming=LenghtIncoming, IncomingAVG=IncomingAVG, CountOutgoing=CountOutgoing, LenghtOutgoing=LenghtOutgoing, OutgoingAVG=OutgoingAVG,
                                         CountMissed=CountMissed)
-                db.session.add(NewMetrica)
-                db.session.commit()
-                print('Экземпляр модели Metrics был успешно добавлен в базу данных')
+                try:
+                    db.session.add(NewMetrica)
+                    db.session.commit()
+                    print('Экземпляр модели Metrics был успешно добавлен в базу данных')
+                except Exception as e:
+                    return jsonify({"error": str(e)}), 502
                 
             else:
                 print('Экземпляр модели Metrics уже существует')
