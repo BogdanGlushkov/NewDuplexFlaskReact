@@ -44,7 +44,7 @@ def add_metrika():
                 new_operator = User(name=user)
                 db.session.add(new_operator)
                 db.session.commit()
-                logging.debug("Successfully added new operator: {user}")
+                logging.debug(f"Successfully added new operator: {user}")
             
             user = db.session.execute(db.select(User.id, User.name).filter(User.name == user)).first()
             user_id = user[0]
