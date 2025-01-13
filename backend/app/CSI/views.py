@@ -49,7 +49,7 @@ def add_metrika():
             user_id = user[0]
             logging.debug(f"User ID: {user_id}")
             
-            this_metrica = db.session.execute(db.select(Metrics).filter(Metrics.user_id == user_id).filter(Metrics.Data == date)).all()
+            this_metrica = Metrics.query.filter_by(user_id=user_id, Data=date).first()
             logging.debug(f"find metrica for user: {this_metrica}")
             
             if not this_metrica:
