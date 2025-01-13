@@ -22,7 +22,7 @@ def add_metrika():
     if not response_data:
         return jsonify({"error": "Invalid or missing JSON data"}), 404
     
-    for part_json in response_data.get("metriks", []):
+    for part_json in response_data["metriks"]:
         try:
             date = part_json.get("Date")
             user = part_json.get("Operator")
