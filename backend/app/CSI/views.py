@@ -41,9 +41,12 @@ def add_metrika():
                 print("Successfully added new operator")
             
             user = db.session.execute(db.select(User.id, User.name).filter(User.name == user)).all()
+            print(user)
             user_id = user.id
+            print(user)
             
             this_metrica = db.session.execute(db.select(Metrics).filter(Metrics.operator_id == user_id).filter(Metrics.Data == date)).all()
+            print(this_metrica)
             
             if not this_metrica:
                 StatusTimeInPlace = datetime.strptime(part_json.get("StatusTimeInPlace"), '%H:%M:%S').time()
