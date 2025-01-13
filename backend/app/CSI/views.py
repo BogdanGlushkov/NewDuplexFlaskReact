@@ -57,7 +57,8 @@ def add_metrika():
                 StatusTimeBusy = datetime.strptime(part_json.get("StatusTimeBusy"), '%H:%M:%S').time()
                 StatusTimeBreak = datetime.strptime(part_json.get("StatusTimeBreak"), '%H:%M:%S').time()
                 StatusTimeGone = datetime.strptime(part_json.get("StatusTimeGone"), '%H:%M:%S').time()
-                StatusTimeNotAvailable = datetime.strptime(part_json.get("StatusTimeNotAvailable"), '%H:%M:%S').time()                
+                StatusTimeNotAvailable = datetime.strptime(part_json.get("StatusTimeNotAvailable"), '%H:%M:%S').time()   
+                logging.debug("1")             
                 
                 PercentInPlace = part_json.get("PercentInPlace")
                 
@@ -95,6 +96,8 @@ def add_metrika():
                     CountMissed = part_json.get("CountMissed")
                 else: 
                     CountMissed = 0
+                    
+                logging.debug("2")     
                 
                 NewMetrica = Metrics(Data=date,
                                     user_id=user_id,
@@ -111,9 +114,12 @@ def add_metrika():
                                     LenghtOutgoing=LenghtOutgoing,
                                     OutgoingAVG=OutgoingAVG,
                                     CountMissed=CountMissed)
+                
+                logging.debug("3")     
                 try:
                     db.session.add(NewMetrica)
                     db.session.commit()
+                    logging.debug("4")     
                 except Exception as e:
                     db.session.rollback()
                     logging.debug(f"Ошибка при добавлении метрики: {str(e)} user_id: {user_id}, date: {date}")
