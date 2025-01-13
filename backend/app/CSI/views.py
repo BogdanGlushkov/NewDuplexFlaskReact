@@ -45,7 +45,6 @@ def add_metrika():
             print(user)
             
             this_metrica = db.session.execute(db.select(Metrics).filter(Metrics.user_id == user_id).filter(Metrics.Data == date)).all()
-            print(this_metrica)
             
             if not this_metrica:
                 StatusTimeInPlace = datetime.strptime(part_json.get("StatusTimeInPlace"), '%H:%M:%S').time()
