@@ -20,7 +20,6 @@ def add_metrika():
         return jsonify({'message': 'Access forbidden: Invalid CSI password'}), 403
 
     response_data = request.get_json()
-    print(response_data)
     if not response_data:
         return jsonify({"error": "Invalid or missing JSON data"}), 404
     
@@ -45,7 +44,7 @@ def add_metrika():
             user_id = user[0]
             print(user)
             
-            this_metrica = db.session.execute(db.select(Metrics).filter(Metrics.operator_id == user_id).filter(Metrics.Data == date)).all()
+            this_metrica = db.session.execute(db.select(Metrics).filter(Metrics.user_id == user_id).filter(Metrics.Data == date)).all()
             print(this_metrica)
             
             if not this_metrica:
