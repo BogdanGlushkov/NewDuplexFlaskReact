@@ -113,11 +113,38 @@ def add_metrika():
                     CountMissed = 0
 
                 logging.debug(f"Adding new metrica for {CountMissed}")
+                
+                logging.debug(f"Adding new metrica for {date,
+                                    user_id,
+                                    StatusTimeInPlace,
+                                    StatusTimeBusy,
+                                    StatusTimeBreak,
+                                    StatusTimeGone,
+                                    StatusTimeNotAvailable,
+                                    PercentInPlace,
+                                    CountIncoming,
+                                    LenghtIncoming,
+                                    IncomingAVG,
+                                    CountOutgoing,
+                                    LenghtOutgoing,
+                                    OutgoingAVG,
+                                    CountMissed}")
 
-                NewMetrica = Metrics(Data=date, user_id=user_id, StatusTimeInPlace=StatusTimeInPlace, StatusTimeBusy=StatusTimeBusy, StatusTimeBreak=StatusTimeBreak,
-                                        StatusTimeGone=StatusTimeGone, StatusTimeNotAvailable=StatusTimeNotAvailable, PercentInPlace=PercentInPlace, CountIncoming=CountIncoming,
-                                        LenghtIncoming=LenghtIncoming, IncomingAVG=IncomingAVG, CountOutgoing=CountOutgoing, LenghtOutgoing=LenghtOutgoing, OutgoingAVG=OutgoingAVG,
-                                        CountMissed=CountMissed)
+                NewMetrica = Metrics(Data=date,
+                                    user_id=user_id,
+                                    StatusTimeInPlace=StatusTimeInPlace,
+                                    StatusTimeBusy=StatusTimeBusy,
+                                    StatusTimeBreak=StatusTimeBreak,
+                                    StatusTimeGone=StatusTimeGone,
+                                    StatusTimeNotAvailable=StatusTimeNotAvailable,
+                                    PercentInPlace=PercentInPlace,
+                                    CountIncoming=CountIncoming,
+                                    LenghtIncoming=LenghtIncoming,
+                                    IncomingAVG=IncomingAVG,
+                                    CountOutgoing=CountOutgoing,
+                                    LenghtOutgoing=LenghtOutgoing,
+                                    OutgoingAVG=OutgoingAVG,
+                                    CountMissed=CountMissed)
                 logging.debug(f"Adding new metrica for {NewMetrica}")
                 db.session.add(NewMetrica)
                 logging.debug(f"Adding new metrica for")
