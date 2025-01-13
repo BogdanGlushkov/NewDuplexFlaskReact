@@ -131,12 +131,13 @@ def add_metrika():
                                     LenghtOutgoing=LenghtOutgoing,
                                     OutgoingAVG=OutgoingAVG,
                                     CountMissed=CountMissed)
-                logging.debug(f"Adding new metrica for {NewMetrica}")
-                db.session.add(NewMetrica)
-                logging.debug(f"Adding new metrica for")
-
-                db.session.commit()
-                logging.debug('Экземпляр модели Metrics был успешно добавлен в базу данных')
+                try:
+                    db.session.add(NewMetrica)
+                    db.session.commit()
+                    print('Метрика успешно добавлена')
+                except Exception as e:
+                    db.session.rollback()  # откатываем изменения в случае ошибки
+                    app.logger.error(f"Ошибка при добавлении метрики: {str(e)}")
                 
             else:
                 logging.debug('Экземпляр модели Metrics уже существует')
