@@ -118,6 +118,7 @@ def add_metrika():
                                         StatusTimeGone=StatusTimeGone, StatusTimeNotAvailable=StatusTimeNotAvailable, PercentInPlace=PercentInPlace, CountIncoming=CountIncoming,
                                         LenghtIncoming=LenghtIncoming, IncomingAVG=IncomingAVG, CountOutgoing=CountOutgoing, LenghtOutgoing=LenghtOutgoing, OutgoingAVG=OutgoingAVG,
                                         CountMissed=CountMissed)
+                logging.debug(f"Adding new metrica for {NewMetrica}")
                 db.session.add(NewMetrica)
                 logging.debug(f"Adding new metrica for")
 
