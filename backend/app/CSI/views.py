@@ -1,4 +1,5 @@
 import os
+import json
 from flask import Blueprint, request, jsonify
 
 from app.models.User import User
@@ -19,8 +20,11 @@ def add_metrika():
         return jsonify({'message': 'Access forbidden: Invalid CSI password'}), 403
 
     response_data = request.get_json()
+    print(response_data)
     if not response_data:
         return jsonify({"error": "Invalid or missing JSON data"}), 404
+    
+    response_data = json.loads(response_data)
     
     for part_json in response_data["metriks"]:
         try:
