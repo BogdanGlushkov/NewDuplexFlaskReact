@@ -54,7 +54,7 @@ def add_metrika():
             
             if not this_metrica:
                 logging.debug(f"Adding new metrica for user: {user_id} on date: {date}")
-                logging.debug(f"Adding new metrica for user: 0")
+                logging.debug(f"Adding new metrica for user: {part_json.get("StatusTimeInPlace")}")
                 StatusTimeInPlace = datetime.strptime(part_json.get("StatusTimeInPlace"), '%H:%M:%S').time()
                 logging.debug(f"Adding new metrica for user: 1")
                 StatusTimeBusy = datetime.strptime(part_json.get("StatusTimeBusy"), '%H:%M:%S').time()
