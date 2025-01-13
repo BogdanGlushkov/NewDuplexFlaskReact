@@ -20,4 +20,4 @@ class Metrics(db.Model):
     CountMissed = db.Column(db.Integer)
     
     def __repr__(self):
-        return f'<Metrics {self.Data}, {self.Operator}>'
+        return f'<Metrics {self.Data}, {self.user_id}>'
