@@ -52,13 +52,27 @@ def add_metrika():
             this_metrica = Metrics.query.filter_by(user_id=user_id, Data=date).first()
             
             if not this_metrica:
-                logging.debug(f"Adding new metrica for user: {user_id} on date: {date}")
-                StatusTimeInPlace = datetime.strptime(part_json.get("StatusTimeInPlace"), '%H:%M:%S').time()
-                StatusTimeBusy = datetime.strptime(part_json.get("StatusTimeBusy"), '%H:%M:%S').time()
-                StatusTimeBreak = datetime.strptime(part_json.get("StatusTimeBreak"), '%H:%M:%S').time()
-                StatusTimeGone = datetime.strptime(part_json.get("StatusTimeGone"), '%H:%M:%S').time()
-                StatusTimeNotAvailable = datetime.strptime(part_json.get("StatusTimeNotAvailable"), '%H:%M:%S').time()   
-                logging.debug("1")             
+                # logging.debug(f"Adding new metrica for user: {user_id} on date: {date}")
+                if isinstance(part_json.get("StatusTimeInPlace"), str): 
+                    StatusTimeInPlace = datetime.strptime(part_json.get("StatusTimeInPlace"), '%H:%M:%S').time()
+                else: 
+                    StatusTimeInPlace = time(00, 00, 00)
+                if isinstance(part_json.get("StatusTimeBusy"), str): 
+                    StatusTimeBusy = datetime.strptime(part_json.get("StatusTimeBusy"), '%H:%M:%S').time()
+                else: 
+                    StatusTimeBusy = time(00, 00, 00)
+                if isinstance(part_json.get("StatusTimeBreak"), str): 
+                    StatusTimeBreak = datetime.strptime(part_json.get("StatusTimeBreak"), '%H:%M:%S').time()
+                else: 
+                    StatusTimeBreak = time(00, 00, 00)
+                if isinstance(part_json.get("StatusTimeGone"), str): 
+                    StatusTimeGone = datetime.strptime(part_json.get("StatusTimeGone"), '%H:%M:%S').time()
+                else: 
+                    StatusTimeGone = time(00, 00, 00)
+                if isinstance(part_json.get("StatusTimeNotAvailable"), str): 
+                    StatusTimeNotAvailable = datetime.strptime(part_json.get("StatusTimeNotAvailable"), '%H:%M:%S').time()
+                else: 
+                    StatusTimeNotAvailable = time(00, 00, 00)    
                 
                 PercentInPlace = part_json.get("PercentInPlace")
                 
@@ -95,9 +109,7 @@ def add_metrika():
                 if isinstance(part_json.get("CountMissed"), int): 
                     CountMissed = part_json.get("CountMissed")
                 else: 
-                    CountMissed = 0
-                    
-                logging.debug("2")     
+                    CountMissed = 0   
                 
                 NewMetrica = Metrics(Data=date,
                                     user_id=user_id,
@@ -114,12 +126,9 @@ def add_metrika():
                                     LenghtOutgoing=LenghtOutgoing,
                                     OutgoingAVG=OutgoingAVG,
                                     CountMissed=CountMissed)
-                
-                logging.debug("3")     
                 try:
                     db.session.add(NewMetrica)
-                    db.session.commit()
-                    logging.debug("4")     
+                    db.session.commit()  
                 except Exception as e:
                     db.session.rollback()
                     logging.debug(f"Ошибка при добавлении метрики: {str(e)} user_id: {user_id}, date: {date}")
