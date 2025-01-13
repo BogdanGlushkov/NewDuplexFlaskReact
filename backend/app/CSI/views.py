@@ -42,7 +42,7 @@ def add_metrika():
             
             user = db.session.execute(db.select(User.id, User.name).filter(User.name == user)).first()
             print(user)
-            user_id = user.id
+            user_id = user[0]
             print(user)
             
             this_metrica = db.session.execute(db.select(Metrics).filter(Metrics.operator_id == user_id).filter(Metrics.Data == date)).all()
