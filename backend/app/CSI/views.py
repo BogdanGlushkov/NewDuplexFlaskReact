@@ -15,9 +15,7 @@ def add_metrika():
     if not request.headers.get("Authorization"):
         return jsonify({"message": "Authorization header is missing"}), 401
     
-    if bcrypt.generate_password_hash(request.headers.get("Authorization")).decode('utf-8') != bcrypt.generate_password_hash(os.environ.get('CROSS_SERVER_INTEGRATION_KEY')).decode('utf-8'):
-        print(request.headers.get("Authorization"))
-        print(os.environ.get('CROSS_SERVER_INTEGRATION_KEY'))
+    if request.headers.get("Authorization") != os.environ.get('CROSS_SERVER_INTEGRATION_KEY'):
         return jsonify({'message': 'Access forbidden: Invalid CSI password'}), 403
 
     response_data = request.get_json()
