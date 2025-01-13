@@ -17,7 +17,7 @@ csi = Blueprint('csi', __name__, template_folder='templates')
 
 @csi.route('/add_metrika', methods=['POST'])
 def add_metrika():
-    logging.debug(f"Headers: {request.headers}")
+    # logging.debug(f"Headers: {request.headers}")
     if not request.headers.get("Authorization"):
         return jsonify({"message": "Authorization header is missing"}), 401
     
@@ -25,7 +25,7 @@ def add_metrika():
         return jsonify({'message': 'Access forbidden: Invalid CSI password'}), 403
 
     response_data = request.get_json()
-    logging.debug(f"Request data: {response_data}")
+    # logging.debug(f"Request data: {response_data}")
     if not response_data:
         return jsonify({"error": "Invalid or missing JSON data"}), 404
     
