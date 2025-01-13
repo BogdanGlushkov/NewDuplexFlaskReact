@@ -43,7 +43,7 @@ def add_metrika():
                 new_operator = User(name=user)
                 db.session.add(new_operator)
                 db.session.commit()
-                print("Successfully added new operator")
+                logging.debug("Successfully added new operator")
             
             user = db.session.execute(db.select(User.id, User.name).filter(User.name == user)).first()
             user_id = user[0]
@@ -55,58 +55,77 @@ def add_metrika():
             if not this_metrica:
                 logging.debug(f"Adding new metrica for user: {user_id} on date: {date}")
                 StatusTimeInPlace = datetime.strptime(part_json.get("StatusTimeInPlace"), '%H:%M:%S').time()
+                logging.debug(f"Adding new metrica for user: 1")
                 StatusTimeBusy = datetime.strptime(part_json.get("StatusTimeBusy"), '%H:%M:%S').time()
+                logging.debug(f"Adding new metrica for user: 2")
                 StatusTimeBreak = datetime.strptime(part_json.get("StatusTimeBreak"), '%H:%M:%S').time()
+                logging.debug(f"Adding new metrica for user: 3")
                 StatusTimeGone = datetime.strptime(part_json.get("StatusTimeGone"), '%H:%M:%S').time()
+                logging.debug(f"Adding new metrica for user: 4")
                 StatusTimeNotAvailable = datetime.strptime(part_json.get("StatusTimeNotAvailable"), '%H:%M:%S').time()
+                logging.debug(f"Adding new metrica for user: 5")
+                
                 
                 PercentInPlace = part_json.get("PercentInPlace")
+                logging.debug(f"Adding new metrica for user: 6")
                 
                 if isinstance(part_json.get("CountIncoming"), int): 
                     CountIncoming = part_json.get("CountIncoming")
                 else: 
                     CountIncoming = 0
+                    
+                logging.debug(f"Adding new metrica for user: 7")
                 
                 if isinstance(part_json.get("LenghtIncoming"), str): 
                     LenghtIncoming = datetime.strptime(part_json.get("LenghtIncoming"), '%H:%M:%S').time()
                 else: 
                     LenghtIncoming = time(00, 00, 00)
-                    
+                
+                logging.debug(f"Adding new metrica for user: 8")
                 if isinstance(part_json.get("IncomingAVG"), str): 
                     IncomingAVG = datetime.strptime(part_json.get("IncomingAVG"), '%H:%M:%S').time()
                 else: 
                     IncomingAVG = time(00, 00, 00)
-                    
+                
+                logging.debug(f"Adding new metrica for user: 8")
                 if isinstance(part_json.get("CountOutgoing"), int): 
                     CountOutgoing = part_json.get("CountOutgoing")
                 else: 
                     CountOutgoing = 0
-                    
+                
+                logging.debug(f"Adding new metrica for user: 9")
                 if isinstance(part_json.get("LenghtOutgoing"), str): 
                     LenghtOutgoing = datetime.strptime(part_json.get("LenghtOutgoing"), '%H:%M:%S').time()
                 else: 
                     LenghtOutgoing = time(00, 00, 00)
                 
+                logging.debug(f"Adding new metrica for user: 10")
                 if isinstance(part_json.get("OutgoingAVG"), str): 
                     OutgoingAVG = datetime.strptime(part_json.get("OutgoingAVG"), '%H:%M:%S').time()
                 else: 
                     OutgoingAVG = time(00, 00, 00)
-                    
+                
+                logging.debug(f"Adding new metrica for user: 11")
+
                 if isinstance(part_json.get("CountMissed"), int): 
                     CountMissed = part_json.get("CountMissed")
                 else: 
                     CountMissed = 0
-            
+
+                logging.debug(f"Adding new metrica for user: 11")
+
                 NewMetrica = Metrics(Data=date, operator_id=user_id, StatusTimeInPlace=StatusTimeInPlace, StatusTimeBusy=StatusTimeBusy, StatusTimeBreak=StatusTimeBreak,
                                         StatusTimeGone=StatusTimeGone, StatusTimeNotAvailable=StatusTimeNotAvailable, PercentInPlace=PercentInPlace, CountIncoming=CountIncoming,
                                         LenghtIncoming=LenghtIncoming, IncomingAVG=IncomingAVG, CountOutgoing=CountOutgoing, LenghtOutgoing=LenghtOutgoing, OutgoingAVG=OutgoingAVG,
                                         CountMissed=CountMissed)
                 db.session.add(NewMetrica)
+                logging.debug(f"Adding new metrica for user: 12")
+
                 db.session.commit()
-                print('Экземпляр модели Metrics был успешно добавлен в базу данных')
+                logging.debug('Экземпляр модели Metrics был успешно добавлен в базу данных')
                 
             else:
-                print('Экземпляр модели Metrics уже существует')
+                logging.debug('Экземпляр модели Metrics уже существует')
                     
         except Exception as e:
             return jsonify({"error": str(e)}), 500
