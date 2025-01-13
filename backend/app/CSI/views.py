@@ -114,20 +114,20 @@ def add_metrika():
 
                 logging.debug(f"Adding new metrica for {CountMissed}")
                 
-                logging.debug(f"Adding new metrica for {date,
-                                    user_id,
-                                    StatusTimeInPlace,
-                                    StatusTimeBusy,
-                                    StatusTimeBreak,
-                                    StatusTimeGone,
-                                    StatusTimeNotAvailable,
-                                    PercentInPlace,
-                                    CountIncoming,
-                                    LenghtIncoming,
-                                    IncomingAVG,
-                                    CountOutgoing,
-                                    LenghtOutgoing,
-                                    OutgoingAVG,
+                logging.debug(f"Adding new metrica for {date, \
+                                    user_id, \
+                                    StatusTimeInPlace, \
+                                    StatusTimeBusy,\
+                                    StatusTimeBreak,\
+                                    StatusTimeGone,\
+                                    StatusTimeNotAvailable,\
+                                    PercentInPlace,\
+                                    CountIncoming,\
+                                    LenghtIncoming,\
+                                    IncomingAVG,\
+                                    CountOutgoing,\
+                                    LenghtOutgoing,\
+                                    OutgoingAVG,\
                                     CountMissed}")
 
                 NewMetrica = Metrics(Data=date,
