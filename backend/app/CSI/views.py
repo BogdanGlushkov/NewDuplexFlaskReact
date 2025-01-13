@@ -5,14 +5,19 @@ from flask import Blueprint, request, jsonify
 from app.models.User import User
 from app.models.CSI import Metrics
 
-from app.extensions import db, bcrypt
+from app.extensions import db
 from datetime import datetime, time
+
+import logging
+
+logging.basicConfig(level=logging.DEBUG)
 
 
 csi = Blueprint('csi', __name__, template_folder='templates')
 
 @csi.route('/add_metrika', methods=['POST'])
 def add_metrika():
+    logging.debug(f"Headers: {request.headers}")
     if not request.headers.get("Authorization"):
         return jsonify({"message": "Authorization header is missing"}), 401
     
@@ -20,6 +25,7 @@ def add_metrika():
         return jsonify({'message': 'Access forbidden: Invalid CSI password'}), 403
 
     response_data = request.get_json()
+    logging.debug(f"Request data: {response_data}")
     if not response_data:
         return jsonify({"error": "Invalid or missing JSON data"}), 404
     
@@ -33,23 +39,21 @@ def add_metrika():
                 return jsonify({"error": "Missing required fields: Date or Operator"}), 404
             
             if not User.query.filter_by(name=user).first():
-                try:
-                    print(user)
-                    new_operator = User(name=user)
-                    db.session.add(new_operator)
-                    db.session.commit()
-                    print("Successfully added new operator")
-                except Exception as e:
-                    return jsonify({"error": str(e)}), 510
+                logging.debug(f"Adding new operator: {user}")
+                new_operator = User(name=user)
+                db.session.add(new_operator)
+                db.session.commit()
+                print("Successfully added new operator")
             
             user = db.session.execute(db.select(User.id, User.name).filter(User.name == user)).first()
-            print(user)
             user_id = user[0]
-            print(user)
+            logging.debug(f"User ID: {user_id}")
             
             this_metrica = db.session.execute(db.select(Metrics).filter(Metrics.user_id == user_id).filter(Metrics.Data == date)).all()
+            logging.debug(f"find metrica for user: {this_metrica}")
             
             if not this_metrica:
+                logging.debug(f"Adding new metrica for user: {user_id} on date: {date}")
                 StatusTimeInPlace = datetime.strptime(part_json.get("StatusTimeInPlace"), '%H:%M:%S').time()
                 StatusTimeBusy = datetime.strptime(part_json.get("StatusTimeBusy"), '%H:%M:%S').time()
                 StatusTimeBreak = datetime.strptime(part_json.get("StatusTimeBreak"), '%H:%M:%S').time()
@@ -97,12 +101,9 @@ def add_metrika():
                                         StatusTimeGone=StatusTimeGone, StatusTimeNotAvailable=StatusTimeNotAvailable, PercentInPlace=PercentInPlace, CountIncoming=CountIncoming,
                                         LenghtIncoming=LenghtIncoming, IncomingAVG=IncomingAVG, CountOutgoing=CountOutgoing, LenghtOutgoing=LenghtOutgoing, OutgoingAVG=OutgoingAVG,
                                         CountMissed=CountMissed)
-                try:
-                    db.session.add(NewMetrica)
-                    db.session.commit()
-                    print('Экземпляр модели Metrics был успешно добавлен в базу данных')
-                except Exception as e:
-                    return jsonify({"error": str(e)}), 502
+                db.session.add(NewMetrica)
+                db.session.commit()
+                print('Экземпляр модели Metrics был успешно добавлен в базу данных')
                 
             else:
                 print('Экземпляр модели Metrics уже существует')
