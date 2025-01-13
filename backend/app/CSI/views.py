@@ -134,10 +134,10 @@ def add_metrika():
                 try:
                     db.session.add(NewMetrica)
                     db.session.commit()
-                    print('Метрика успешно добавлена')
+                    logging.debug("Метрика успешно добавлена")
                 except Exception as e:
                     db.session.rollback()  # откатываем изменения в случае ошибки
-                    app.logger.error(f"Ошибка при добавлении метрики: {str(e)}")
+                    logging.debug(f"Ошибка при добавлении метрики: {str(e)}")
                 
             else:
                 logging.debug('Экземпляр модели Metrics уже существует')
