@@ -40,7 +40,7 @@ def add_metrika():
                 db.session.commit()
                 print("Successfully added new operator")
             
-            user = db.session.execute(db.select(User.id, User.name).filter(User.name == user)).all()
+            user = db.session.execute(db.select(User.id, User.name).filter(User.name == user)).first()
             print(user)
             user_id = user.id
             print(user)
