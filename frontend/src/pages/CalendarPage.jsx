@@ -54,7 +54,7 @@ const CalendarPage = ({ userName, userRole }) => {
       try {
         const res = await fetch(`${BASE_URL}/projects`);
         const fetchedProjects = await res.json();
-        
+
         if (!res.ok) {
           throw new Error(fetchedProjects.error);
         }
@@ -73,10 +73,10 @@ const CalendarPage = ({ userName, userRole }) => {
       try {
         const startOfMonth = new Date(currentDate.getFullYear(), currentDate.getMonth(), 1);
         const endOfMonth = new Date(currentDate.getFullYear(), currentDate.getMonth() + 1, 1);
-        
+
         const res = await fetch(`${BASE_URL}/users?start=${startOfMonth.toISOString()}&end=${endOfMonth.toISOString()}`);
         const fetchedUsers = await res.json();
-        
+
         if (!res.ok) {
           throw new Error(fetchedUsers.error);
         }
@@ -182,16 +182,16 @@ const CalendarPage = ({ userName, userRole }) => {
   const handleCellClick = (date, user) => {
     const cell = { date, user };
     if (userRole === 'admin') {
-    setSelectedCells(prevCells => {
-      const isCellSelected = prevCells.some(c => isSameDay(c.date, date) && c.user === user);
+      setSelectedCells(prevCells => {
+        const isCellSelected = prevCells.some(c => isSameDay(c.date, date) && c.user === user);
 
-      if (isCellSelected) {
-        return prevCells.filter(c => !(isSameDay(c.date, date) && c.user === user));
-      } else {
-        return [...prevCells, cell];
-      }
-    });
-  }
+        if (isCellSelected) {
+          return prevCells.filter(c => !(isSameDay(c.date, date) && c.user === user));
+        } else {
+          return [...prevCells, cell];
+        }
+      });
+    }
 
     setShowSettings(true);
   };
@@ -219,22 +219,23 @@ const CalendarPage = ({ userName, userRole }) => {
             <label>
               Показать ФИО:
             </label>
-            <input 
-                type="checkbox" 
-                checked={showPrefix} 
-                onChange={(e) => setShowPrefix(e.target.checked)} 
-              />
+            <input
+              type="checkbox"
+              checked={showPrefix}
+              onChange={(e) => setShowPrefix(e.target.checked)}
+            />
           </div>
         </div>
         <div className='right-content-header'>
-        {/* <Link to='/breaks'>Перерывы</Link> */}
-        {(userRole === 'admin') && 
-          <>
-            <Link to="/accounts">Аккаунты</Link>
-            <Link to="/projects">Проекты</Link>
-          </>
-        }
-          
+          {/* <Link to='/breaks'>Перерывы</Link> */}
+          {(userRole === 'admin') &&
+            <>
+              <Link to="/accounts">Аккаунты</Link>
+              <Link to="/projects">Проекты</Link>
+              <Link to="/metrics">Метрики</Link>
+            </>
+          }
+
           {userName && <p>Имя пользователя: {userName}</p>}
           <button onClick={logout} className="logout-button-header">
             Выйти
