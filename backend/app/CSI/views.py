@@ -161,7 +161,7 @@ def calculate_monthly_average(start_date, end_date, user_id=None):
     user_data = {}
 
     for metrika in metrics:
-        user_name = metrika.user.username  # Предполагается, что у пользователя есть имя
+        user_name = metrika.user.name  # Предполагается, что у пользователя есть имя
         if user_name not in user_data:
             user_data[user_name] = {
                 "SumCountIncoming": 0,
