@@ -139,3 +139,59 @@ def add_metrika():
         
 
     return jsonify({'message': 'Metriks added successfully'}), 201
+
+def calculate_monthly_average(start_date, end_date, user_id=None):
+    start_date = datetime.strptime(start_date, "%Y-%m-%d")
+    end_date = datetime.strptime(end_date, "%Y-%m-%d")
+
+    # Базовый запрос
+    query = Metrics.query.filter(
+        Metrics.Data >= start_date,
+        Metrics.Data <= end_date
+    )
+
+    # Если указан user_id, добавляем фильтр по пользователю
+    if user_id:
+        query = query.filter(Metrics.user_id == user_id)
+        
+    metrics = query.all()
+    
+    if not metrics:
+        return None
+    
+    count = 0
+    SumCountIncoming = 0
+    
+    for metrika in metrics:
+        if metrika != 0:
+            SumCountIncoming += metrika
+            count += 1
+        
+        if count != 0:
+            return { "user": metrika.user.name, "AvgCountIncoming": SumCountIncoming }
+        else:
+            return { "user": metrika.user.name, "AvgCountIncoming": 0 }
+    
+
+@csi.route('/get_metrika', methods=['GET'])
+def get_metrika():
+    start_date = request.args.get('start_date')
+    end_date = request.args.get('end_date')
+    user_id = request.args.get('user_id')
+    
+    if not start_date or not end_date:
+        return jsonify({"error": "Укажите start_date и end_date"}), 400
+
+    # Преобразуем user_id в число, если он указан
+    if user_id:
+        try:
+            user_id = int(user_id)
+        except ValueError:
+            return jsonify({"error": "user_id должен быть числом"}), 400
+
+    result = calculate_monthly_average(start_date, end_date, user_id)
+
+    if result is None:
+        return jsonify({"message": "Нет данных за указанный промежуток"}), 404
+
+    return jsonify(result), 201
