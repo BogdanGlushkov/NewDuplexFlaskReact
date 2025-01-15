@@ -163,8 +163,8 @@ def calculate_monthly_average(start_date, end_date, user_id=None):
     SumCountIncoming = 0
     
     for metrika in metrics:
-        if metrika != 0:
-            SumCountIncoming += metrika
+        if metrika.CountIncoming != 0:
+            SumCountIncoming += metrika.CountIncoming
             count += 1
         
         if count != 0:
