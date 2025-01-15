@@ -7,6 +7,7 @@ import LoginPage from './pages/LoginPage';
 import NoAccessPage from './pages/NoAccessPage';
 import PrivateRoute from './pages/PrivateRoute';
 import ExistingAccounts from './pages/ExistingAccounts';
+import MetricsGraph from './pages/MetricsGraph';
 import './App.css';
 
 export const BASE_URL = "http://olegperm.fvds.ru/api";
@@ -29,6 +30,10 @@ const App = () => {
           <Route
             path="/accounts"
             element={<PrivateRoute element={ExistingAccounts} roles={['admin']} />}
+          />
+          <Route
+            path="/metrics"
+            element={<PrivateRoute element={MetricsGraph} roles={['admin', 'user']} />}
           />
         </Routes>
       </div>
