@@ -12,6 +12,7 @@ class UserAcc(db.Model):
     id = db.Column(db.Integer, primary_key=True)
     username = db.Column(db.String(150), unique=True, nullable=False)
     password = db.Column(db.String(150), nullable=False)
+    user_id_inf = db.Column(db.Integer)
     prefix = db.Column(db.String(300))
     role_id = db.Column(db.Integer, db.ForeignKey('role.id'), nullable=False)
     role = db.relationship('Role', backref=db.backref('Accounts', lazy=True))

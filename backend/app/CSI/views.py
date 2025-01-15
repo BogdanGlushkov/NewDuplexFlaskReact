@@ -4,8 +4,9 @@ from flask import Blueprint, request, jsonify
 
 from app.models.User import User
 from app.models.CSI import Metrics
+from app.models.Auth import UserAcc, Role
 
-from app.extensions import db
+from app.extensions import db, bcrypt
 from datetime import datetime, time
 
 import logging
@@ -194,7 +195,7 @@ def calculate_monthly_average(start_date, end_date, limit=None):
     return result
     
 
-@csi.route('/get_metrika', methods=['GET'])
+@csi.route('/get_metrika', methods=['POST'])
 def get_metrika():
     start_date = request.args.get('start_date')
     end_date = request.args.get('end_date')
@@ -217,3 +218,75 @@ def get_metrika():
         return jsonify({"message": "Нет данных за указанный промежуток"}), 404
 
     return jsonify(result), 201
+
+@csi.route('/add_account', methods=['POST'])
+def add_account_CSI():
+    if not request.headers.get("Authorization"):
+        logging.debug("Authorization header is missing, 401")
+        return jsonify({"message": "Authorization header is missing"}), 401
+    
+    if request.headers.get("Authorization") != os.environ.get('CROSS_SERVER_INTEGRATION_KEY'):
+        logging.debug("Access forbidden: Invalid CSI password, 403")
+        return jsonify({'message': 'Access forbidden: Invalid CSI password'}), 403
+
+    response_data = request.get_json()
+    if not response_data:
+        logging.debug("Invalid or missing JSON data, 404")
+        return jsonify({"error": "Invalid or missing JSON data"}), 404
+    try:
+        # response_data
+        user_id_inf = response_data["user_id_inf"]
+        password = response_data["password"]
+        if response_data["prefix"]:
+            prefix = response_data["prefix"]
+        role_name = response_data["role"]
+        role = Role.query.filter_by(name=role_name).first()
+        
+        login = response_data["login"]
+        
+        if not User.query.filter_by(name=login).first():
+            new_operator = User(name=login)
+            try:
+                db.session.add(new_operator)
+                db.session.commit()
+                logging.debug(f"Successfully added new operator: {login}")
+            except Exception as e:
+                db.session.rollback()
+                logging.debug(f"Ошибка при добавлении оператора: {str(e)} login: {login}")
+            
+                
+        user = db.session.execute(db.select(User.id, User.name).filter(User.name == login)).first()
+        user_id = user[0]
+        
+        isActive = response_data["isActive"]
+        
+        user = db.session.execute(db.select(UserAcc.id, UserAcc.name).filter(UserAcc.user_id_inf == user_id_inf)).first()
+        
+        if not user:
+            new_user = UserAcc(username=login, password=password, user_id_inf=user_id_inf, prefix=prefix, role=role, user_id=user_id if user else None, isActive=isActive)
+            try:
+                db.session.add(new_user)
+                db.session.commit()
+                logging.debug(f"Successfully added new account: {login}")
+            except Exception as e:
+                db.session.rollback()
+                logging.debug(f"Ошибка при добавлении аккаунта: {str(e)} login: {login}")
+                
+        else:
+            try:  
+                user = UserAcc.query.all(user[0])
+                user.username = login
+                user.password = bcrypt.generate_password_hash(password)
+                user.prefix = prefix
+                user.user_id = user_id
+                user.isActive = isActive
+                db.session.commit()
+                logging.debug(f"Successfully update user: {user}")
+            except Exception as e:
+                db.session.rollback()
+                logging.debug(f"Ошибка при обновлении аккаунта: {str(e)} login: {user}")
+            
+    except Exception as e:
+            return jsonify({"error": str(e)}), 500
+            
+    return jsonify({'message': 'Login added successfully'}), 201        

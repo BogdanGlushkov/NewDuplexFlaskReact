@@ -1,16 +1,18 @@
 import React, { useState, useEffect } from 'react';
 import axios from 'axios';
-import { PieChart, Pie, Cell, Tooltip, Legend, ResponsiveContainer } from 'recharts';
+import { PieChart, Pie, Cell, Tooltip, Legend, ResponsiveContainer, Text } from 'recharts';
 import { BASE_URL } from '../App';
+import { Link } from 'react-router-dom';
 
 const MetricsGraph = () => {
     const [metrics, setMetrics] = useState([]);
     const [error, setError] = useState('');
 
-    // Цвета для диаграммы
     const COLORS = [
         '#0088FE', '#00C49F', '#FFBB28', '#FF8042', '#AF19FF',
-        '#FF4567', '#19D3F3', '#AB5FFF', '#F39C12', '#E74C3C'
+        '#FF4567', '#19D3F3', '#AB5FFF', '#F39C12', '#E74C3C',
+        '#7CFC00', '#DC143C', '#4B0082', '#FF6347', '#4682B4',
+        '#32CD32', '#FFD700', '#1E90FF', '#FF1493', '#FF8C00'
     ];
 
     const getCurrentMonthRange = () => {
@@ -59,26 +61,32 @@ const MetricsGraph = () => {
     }
 
     return (
-        <ResponsiveContainer width="100%" height={400}>
-            <PieChart>
-                <Pie
-                    data={metrics}
-                    dataKey="AvgCountIncoming"
-                    nameKey="user"
-                    cx="50%"
-                    cy="50%"
-                    outerRadius={120}
-                    fill="#8884d8"
-                    label
-                >
-                    {metrics.map((entry, index) => (
-                        <Cell key={`cell-${index}`} fill={COLORS[index % COLORS.length]} />
-                    ))}
-                </Pie>
-                <Tooltip />
-                <Legend />
-            </PieChart>
-        </ResponsiveContainer>
+        <div style={{ textAlign: 'center', marginTop: '20px' }}>
+            <div style={{ display: 'flex', alignContent: 'center', justifyContent: 'space-between' }}><h2>Средние показатели по операторам</h2> <h2><Link to="/">Календарь</Link></h2></div>
+            <ResponsiveContainer width="100%" height={400}>
+                <PieChart>
+                    <Pie
+                        data={metrics}
+                        dataKey="AvgCountIncoming"
+                        nameKey="user"
+                        cx="50%"
+                        cy="50%"
+                        outerRadius={120}
+                        fill="#8884d8"
+                        label
+                    >
+                        {metrics.map((entry, index) => (
+                            <Cell key={`cell-${index}`} fill={COLORS[index % COLORS.length]} />
+                        ))}
+                    </Pie>
+                    <Tooltip />
+                    <Legend />
+                    <Text x={200} y={20} textAnchor="middle" dominantBaseline="middle">
+                        Среднее количество входящих звонков
+                    </Text>
+                </PieChart>
+            </ResponsiveContainer>
+        </div>
     );
 };
 
