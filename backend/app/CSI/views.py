@@ -282,7 +282,7 @@ def add_account_CSI():
                 
         else:
             try:  
-                user = UserAcc.query.all(user[0])
+                user = UserAcc.query.get(user[0])
                 user.username = login
                 user.password = bcrypt.generate_password_hash(password)
                 user.prefix = prefix
