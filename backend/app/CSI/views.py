@@ -195,7 +195,7 @@ def calculate_monthly_average(start_date, end_date, limit=None):
     return result
     
 
-@csi.route('/get_metrika', methods=['POST'])
+@csi.route('/get_metrika', methods=['GET'])
 def get_metrika():
     start_date = request.args.get('start_date')
     end_date = request.args.get('end_date')
