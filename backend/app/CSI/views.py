@@ -140,7 +140,7 @@ def add_metrika():
 
     return jsonify({'message': 'Metriks added successfully'}), 201
 
-def calculate_monthly_average(start_date, end_date, user_id=None):
+def calculate_monthly_average(start_date, end_date, limit=None):
     start_date = datetime.strptime(start_date, "%Y-%m-%d")
     end_date = datetime.strptime(end_date, "%Y-%m-%d")
 
@@ -184,6 +184,12 @@ def calculate_monthly_average(start_date, end_date, user_id=None):
             "user": user_name,
             "AvgCountIncoming": avg_count_incoming
         })
+        
+    result.sort(key=lambda x: x["AvgCountIncoming"], reverse=True)
+
+    # Применяем limit, если он указан
+    if limit is not None:
+        result = result[:limit]
 
     return result
     
@@ -192,11 +198,20 @@ def calculate_monthly_average(start_date, end_date, user_id=None):
 def get_metrika():
     start_date = request.args.get('start_date')
     end_date = request.args.get('end_date')
+    limit = request.args.get('limit')
     
     if not start_date or not end_date:
-        return jsonify({"error": "Укажите start_date и end_date"}), 400
+        return jsonify({"error": "Укажите start_date и end_date"}), 401
+    
+    if limit:
+        try:
+            limit = int(limit)
+            if limit <= 0:
+                raise ValueError
+        except ValueError:
+            return jsonify({"error": "limit должен быть положительным числом"}), 401
 
-    result = calculate_monthly_average(start_date, end_date)
+    result = calculate_monthly_average(start_date, end_date, limit)
 
     if result is None:
         return jsonify({"message": "Нет данных за указанный промежуток"}), 404
