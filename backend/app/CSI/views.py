@@ -177,7 +177,7 @@ def calculate_monthly_average(start_date, end_date, user_id=None):
     result = []
     for user_name, data in user_data.items():
         avg_count_incoming = (
-            data["SumCountIncoming"] / data["Count"]
+            data["SumCountIncoming"] // data["Count"]
             if data["Count"] > 0 else 0
         )
         result.append({
