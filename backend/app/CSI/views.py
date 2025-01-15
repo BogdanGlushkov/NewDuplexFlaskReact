@@ -237,6 +237,7 @@ def add_account_CSI():
         # response_data
         user_id_inf = response_data["user_id_inf"]
         password = response_data["password"]
+        logging.debug(f"Successfully password: {password}")
         if response_data["prefix"]:
             prefix = response_data["prefix"]
         role_name = response_data["role"]
