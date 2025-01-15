@@ -242,6 +242,8 @@ def add_account_CSI():
         role_name = response_data["role"]
         role = Role.query.filter_by(name=role_name).first()
         
+        logging.debug(f"Successfully role: {role}")
+        
         login = response_data["login"]
         
         if not User.query.filter_by(name=login).first():
@@ -256,12 +258,17 @@ def add_account_CSI():
             
                 
         user = db.session.execute(db.select(User.id, User.name).filter(User.name == login)).first()
+        logging.debug(f"Successfully user: {user}")
+        
         user_id = user[0]
+        logging.debug(f"Successfully user_id: {user_id}")
         
         isActive = response_data["isActive"]
+        logging.debug(f"Successfully isActive: {isActive}")
         
         user = db.session.execute(db.select(UserAcc.id, UserAcc.name).filter(UserAcc.user_id_inf == user_id_inf)).first()
         
+        logging.debug(f"Successfully user: {user}")
         if not user:
             new_user = UserAcc(username=login, password=password, user_id_inf=user_id_inf, prefix=prefix, role=role, user_id=user_id if user else None, isActive=isActive)
             try:
