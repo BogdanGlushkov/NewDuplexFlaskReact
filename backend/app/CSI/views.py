@@ -266,7 +266,7 @@ def add_account_CSI():
         isActive = response_data["isActive"]
         logging.debug(f"Successfully isActive: {isActive}")
         
-        user = db.session.execute(db.select(UserAcc.id, UserAcc.name).filter(UserAcc.user_id_inf == user_id_inf)).first()
+        user = db.session.execute(db.select(UserAcc.id, UserAcc.name).filter(UserAcc.user_id_inf == int(user_id_inf))).first()
         
         logging.debug(f"Successfully user: {user}")
         if not user:
