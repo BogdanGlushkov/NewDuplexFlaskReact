@@ -149,10 +149,6 @@ def calculate_monthly_average(start_date, end_date, user_id=None):
         Metrics.Data >= start_date,
         Metrics.Data <= end_date
     )
-
-    # Если указан user_id, добавляем фильтр по пользователю
-    if user_id:
-        query = query.filter(Metrics.user_id == user_id)
         
     metrics = query.all()
     
@@ -162,34 +158,45 @@ def calculate_monthly_average(start_date, end_date, user_id=None):
     count = 0
     SumCountIncoming = 0
     
+    user_data = {}
+
     for metrika in metrics:
-        if metrika.CountIncoming != 0:
-            SumCountIncoming += metrika.CountIncoming
-            count += 1
-        
-        if count != 0:
-            return { "user": metrika.user.name, "AvgCountIncoming": SumCountIncoming }
-        else:
-            return { "user": metrika.user.name, "AvgCountIncoming": 0 }
+        user_name = metrika.user.username  # Предполагается, что у пользователя есть имя
+        if user_name not in user_data:
+            user_data[user_name] = {
+                "SumCountIncoming": 0,
+                "Count": 0
+            }
+
+        # Суммируем CountIncoming для пользователя
+        if metrika.CountIncoming:
+            user_data[user_name]["SumCountIncoming"] += metrika.CountIncoming
+            user_data[user_name]["Count"] += 1
+
+    # Рассчитываем средние значения
+    result = []
+    for user_name, data in user_data.items():
+        avg_count_incoming = (
+            data["SumCountIncoming"] / data["Count"]
+            if data["Count"] > 0 else 0
+        )
+        result.append({
+            "user": user_name,
+            "AvgCountIncoming": avg_count_incoming
+        })
+
+    return result
     
 
 @csi.route('/get_metrika', methods=['GET'])
 def get_metrika():
     start_date = request.args.get('start_date')
     end_date = request.args.get('end_date')
-    user_id = request.args.get('user_id')
     
     if not start_date or not end_date:
         return jsonify({"error": "Укажите start_date и end_date"}), 400
 
-    # Преобразуем user_id в число, если он указан
-    if user_id:
-        try:
-            user_id = int(user_id)
-        except ValueError:
-            return jsonify({"error": "user_id должен быть числом"}), 400
-
-    result = calculate_monthly_average(start_date, end_date, user_id)
+    result = calculate_monthly_average(start_date, end_date)
 
     if result is None:
         return jsonify({"message": "Нет данных за указанный промежуток"}), 404
