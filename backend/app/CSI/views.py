@@ -272,7 +272,7 @@ def add_account_CSI():
         
         logging.debug(f"Successfully user: {user}")
         if not user:
-            new_user = UserAcc(username=login, password=password, user_id_inf=user_id_inf, prefix=prefix, role=role, user_id=user_id if user else None, isActive=isActive)
+            new_user = UserAcc(username=login, password=bcrypt.generate_password_hash(password), user_id_inf=user_id_inf, prefix=prefix, role=role, user_id=user_id if user else None, isActive=isActive)
             try:
                 db.session.add(new_user)
                 db.session.commit()
