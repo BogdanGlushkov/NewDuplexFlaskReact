@@ -135,7 +135,7 @@ def update_schedule(username):
                     # Добавляем новую запись
                     new_schedule = Schedule(
                         date=date,
-                        shift=item['shift']
+                        shift=item['shift'],
                         type=item['type'],
                         breaks=json.dumps(item.get('breaks', [])),
                         user_id=user.id
