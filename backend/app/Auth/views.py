@@ -74,9 +74,6 @@ def update_user(user_id):
         return jsonify({'error': 'User not found'}), 404
     
     user.username = data.get('username', user.username)
-    if 'password' in data:
-        if data['password']:
-            user.password = bcrypt.generate_password_hash(data['password'])  # Ensure to hash passwords
     user.role_id = Role.query.filter_by(name=data.get('role')).first().id
     user.prefix = data.get('prefix', user.prefix)
     user.user_id = int(data.get('user', user.user_id))
