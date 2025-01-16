@@ -118,7 +118,7 @@ def update_schedule(username):
             
             # Определяем тип расписания
 
-            if shift_type == 'Выходной':
+            if item['type'] == 'Выходной':
                 # Удаляем запись для этой даты и пользователя
                 schedule_to_delete = Schedule.query.filter_by(date=date, user_id=user.id).first()
                 if schedule_to_delete:
@@ -128,13 +128,15 @@ def update_schedule(username):
                 existing_schedule = Schedule.query.filter_by(date=date, user_id=user.id).first()
                 if existing_schedule:
                     # Обновляем существующую запись
-                    existing_schedule.type = shift_type
+                    existing_schedule.shift = item['shift']
+                    existing_schedule.type = item['type']
                     existing_schedule.breaks = json.dumps(item.get('breaks', []))
                 else:
                     # Добавляем новую запись
                     new_schedule = Schedule(
                         date=date,
-                        type=shift_type,
+                        shift=item['shift']
+                        type=item['type'],
                         breaks=json.dumps(item.get('breaks', [])),
                         user_id=user.id
                     )
