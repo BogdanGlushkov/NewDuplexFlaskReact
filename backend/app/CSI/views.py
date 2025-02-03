@@ -302,8 +302,8 @@ def add_account_CSI():
 
 
 def calculate_hours_for_user(start_date, end_date, user_id):
-    start_date = datetime.strptime(start_date, "%Y-%m-%d")
-    end_date = datetime.strptime(end_date, "%Y-%m-%d")
+    start_date = datetime.strptime(start_date.split('T')[0], "%Y-%m-%d")
+    end_date = datetime.strptime(end_date.split('T')[0], "%Y-%m-%d")
 
     # Базовый запрос
     query = Metrics.query.filter(
