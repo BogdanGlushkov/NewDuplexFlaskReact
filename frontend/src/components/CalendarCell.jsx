@@ -48,7 +48,7 @@ const CalendarCell = ({ shift, type, onClick, selected, currentType, currentTime
     }
   };
 
-  const getContent = ({selected, currentType, currentTime}) => {
+  const getContent = ({ selected, currentType, currentTime }) => {
     if (selected) {
       if (currentType === 'Рабочий день') {
         return currentTime.start + ' ' + currentTime.end;
@@ -60,7 +60,11 @@ const CalendarCell = ({ shift, type, onClick, selected, currentType, currentTime
         }
       }
     } else {
-      return shift;
+      if (shift !== ' ') {
+        return shift;
+      } else {
+        return 'В';
+      }
     }
   };
 
