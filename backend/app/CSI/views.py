@@ -335,7 +335,7 @@ def calculate_hours_for_user(start_date, end_date, user_id):
     return { 'hours': formatted_time }
 
 @csi.route('/get_hours', methods=['GET'])
-def get_metrika():
+def get_hours():
     start_date = request.args.get('start_date')
     end_date = request.args.get('end_date')
     user_id = request.args.get('user_id')
