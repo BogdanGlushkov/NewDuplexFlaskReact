@@ -16,14 +16,14 @@ const CalendarGrid = ({ users, onCellClick, selectedCells, currentType, currentT
       <div className="header-row">
         <div className="header-cell"></div>
         {daysArray.map((date) => {
-        const dayOfWeek = format(date, 'EEEEEE', { locale: ru });
-        return (
-          <div key={date.getTime()} className={`header-cell ${dayOfWeek === 'сб' || dayOfWeek === 'вс' ? 'weekend' : ''}`}>
-          <div>{format(date, 'd')}</div>
-          <div>{dayOfWeek}</div>
-    </div>
-  );
-})}
+          const dayOfWeek = format(date, 'EEEEEE', { locale: ru });
+          return (
+            <div key={date.getTime()} className={`header-cell ${dayOfWeek === 'сб' || dayOfWeek === 'вс' ? 'weekend' : ''}`}>
+              <div>{format(date, 'd')}</div>
+              <div>{dayOfWeek}</div>
+            </div>
+          );
+        })}
       </div>
 
       {users.map(user => (
@@ -36,6 +36,7 @@ const CalendarGrid = ({ users, onCellClick, selectedCells, currentType, currentT
           currentType={currentType}
           currentTime={currentTime}
           showPrefix={showPrefix}
+          currentDate={currentDate}
         />
       ))}
     </div>

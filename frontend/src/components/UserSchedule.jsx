@@ -4,14 +4,17 @@ import '../css/UserSchedule.css';
 import { isSameDay } from 'date-fns';
 import { BASE_URL } from '../App';
 
-const UserSchedule = ({ user, daysInMonth, onCellClick, selectedCells = [], currentType, currentTime, showPrefix }) => {
+const UserSchedule = ({ user, daysInMonth, onCellClick, selectedCells = [], currentType, currentTime, showPrefix, currentDate }) => {
 
   const [WorkedTime, SetWorkedTime] = useState('00:00:00');
+  const UserId = useState(user.id);
 
   useEffect(() => {
     const fetchWorkedTime = async () => {
       try {
-        const res = await fetch(`${BASE_URL}/get_hours`);
+        const startOfMonth = new Date(currentDate.getFullYear(), currentDate.getMonth(), 1);
+        const endOfMonth = new Date(currentDate.getFullYear(), currentDate.getMonth() + 1, 1);
+        const res = await fetch(`${BASE_URL}/get_hours?start_date=${startOfMonth.toISOString()}&end_date=${endOfMonth.toISOString()}&user_id=${UserId}`);
         const fetchedTime = await res.json();
 
         if (!res.ok) {
@@ -25,7 +28,7 @@ const UserSchedule = ({ user, daysInMonth, onCellClick, selectedCells = [], curr
     };
 
     fetchWorkedTime();
-  }, []);
+  }, [currentDate, UserId]);
 
 
   return (
@@ -47,7 +50,7 @@ const UserSchedule = ({ user, daysInMonth, onCellClick, selectedCells = [], curr
           />
         );
       })}
-      <div className="">
+      <div className="flex-column">
         <div className="">Ожидаемое: 00:00:00</div>
         <div className="">Фактическое: {WorkedTime ? WorkedTime : '00:00:00'}</div>
       </div>
