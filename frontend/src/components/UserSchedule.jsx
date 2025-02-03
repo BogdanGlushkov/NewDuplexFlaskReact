@@ -7,7 +7,7 @@ import { BASE_URL } from '../App';
 const UserSchedule = ({ user, daysInMonth, onCellClick, selectedCells = [], currentType, currentTime, showPrefix, currentDate }) => {
 
   const [WorkedTime, SetWorkedTime] = useState('00:00:00');
-  const UserId = useState(user.id);
+  const UserId = user.id;
 
   useEffect(() => {
     const fetchWorkedTime = async () => {
