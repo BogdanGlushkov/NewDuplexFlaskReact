@@ -7,7 +7,7 @@ from app.models.CSI import Metrics
 from app.models.Auth import UserAcc, Role
 
 from app.extensions import db, bcrypt
-from datetime import datetime, time
+from datetime import datetime, time, timedelta
 
 import logging
 
@@ -298,4 +298,54 @@ def add_account_CSI():
     except Exception as e:
             return jsonify({"error": str(e)}), 500
             
-    return jsonify({'message': 'Login added successfully'}), 201        
+    return jsonify({'message': 'Login added successfully'}), 201   
+
+
+def calculate_hours_for_user(start_date, end_date, user_id):
+    start_date = datetime.strptime(start_date, "%Y-%m-%d")
+    end_date = datetime.strptime(end_date, "%Y-%m-%d")
+
+    # Базовый запрос
+    query = Metrics.query.filter(
+        Metrics.Data >= start_date,
+        Metrics.Data <= end_date,
+        Metrics.user_id == user_id
+    )
+        
+    metrics = query.all()
+    
+    if not metrics:
+        return { 'hours': "00:00:00" }
+    
+    total_seconds = 0
+
+    for metrika in metrics:
+        if metrika.StatusTimeInPlace:
+            # Преобразуем время в общее количество секунд
+            time_obj = metrika.StatusTimeInPlace
+            total_seconds += time_obj.hour * 3600 + time_obj.minute * 60 + time_obj.second
+            
+    total_time = timedelta(seconds=total_seconds)
+
+    hours, remainder = divmod(total_time.seconds, 3600)
+    minutes, seconds = divmod(remainder, 60)
+    formatted_time = f"{hours:02}:{minutes:02}:{seconds:02}"
+    
+    # Возвращаем результат
+    return { 'hours': formatted_time }
+
+@csi.route('/get_hours', methods=['GET'])
+def get_metrika():
+    start_date = request.args.get('start_date')
+    end_date = request.args.get('end_date')
+    user_id = request.args.get('user_id')
+    
+    if not start_date or not end_date:
+        return jsonify({"error": "Укажите start_date и end_date"}), 401
+
+    result = calculate_hours_for_user(start_date, end_date, user_id)
+
+    if result is None:
+        return jsonify({"message": "Нет данных за указанный промежуток"}), 404
+
+    return jsonify(result), 201
