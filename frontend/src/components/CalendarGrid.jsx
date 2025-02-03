@@ -24,6 +24,7 @@ const CalendarGrid = ({ users, onCellClick, selectedCells, currentType, currentT
             </div>
           );
         })}
+        <div className="header-cell"></div>
       </div>
 
       {users.map(user => (
