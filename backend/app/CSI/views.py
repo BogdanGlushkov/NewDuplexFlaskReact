@@ -324,10 +324,8 @@ def calculate_hours_for_user(start_date, end_date, user_id):
             # Преобразуем время в общее количество секунд
             time_obj = metrika.StatusTimeInPlace
             total_seconds += time_obj.hour * 3600 + time_obj.minute * 60 + time_obj.second
-            
-    total_time = timedelta(seconds=total_seconds)
 
-    hours, remainder = divmod(total_time.seconds, 3600)
+    hours, remainder = divmod(total_seconds, 3600)
     minutes, seconds = divmod(remainder, 60)
     formatted_time = f"{hours:02}:{minutes:02}:{seconds:02}"
     
