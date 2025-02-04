@@ -7,6 +7,7 @@ import { BASE_URL } from '../App';
 const UserSchedule = ({ user, daysInMonth, onCellClick, selectedCells = [], currentType, currentTime, showPrefix, currentDate }) => {
 
   const [WorkedTime, SetWorkedTime] = useState('00:00:00');
+  const [EstimatedTime, SetEstimatedTime] = useState('00:00:00');
   const UserId = user.id;
 
   useEffect(() => {
@@ -30,6 +31,45 @@ const UserSchedule = ({ user, daysInMonth, onCellClick, selectedCells = [], curr
     fetchWorkedTime();
   }, [currentDate, UserId]);
 
+  useEffect(() => {
+    const calculateWorkingTime = (user) => {
+      const workingDays = user.schedule.filter(day => day.type === "Рабочий день");
+
+      const timeToMinutes = (time) => {
+        const [hours, minutes] = time.split(':').map(Number);
+        return hours * 60 + minutes;
+      };
+
+      let totalMinutes = 0;
+
+      workingDays.forEach((day) => {
+        const [start, end] = day.shift.split(' ');
+        let workMinutes = timeToMinutes(end) - timeToMinutes(start);
+
+        // Обрабатываем перерывы, если они есть
+        if (day.breaks) {
+          try {
+            const breaks = JSON.parse(day.breaks);
+            breaks.forEach(breakPeriod => {
+              workMinutes -= timeToMinutes(breakPeriod.end) - timeToMinutes(breakPeriod.start);
+            });
+          } catch (error) {
+            console.error("Ошибка парсинга перерывов:", error);
+          }
+        }
+
+        totalMinutes += workMinutes;
+      });
+
+      const hours = String(Math.floor(totalMinutes / 60)).padStart(2, '0');
+      const minutes = String(totalMinutes % 60).padStart(2, '0');
+
+      return `${hours}:${minutes}:00`;
+    };
+
+    SetEstimatedTime(calculateWorkingTime(user));
+  }, [user]);
+
 
   return (
     <div className="user-row">
@@ -51,8 +91,8 @@ const UserSchedule = ({ user, daysInMonth, onCellClick, selectedCells = [], curr
         );
       })}
       <div className="flex-column">
-        <div className="">Ожидаемое: 00:00:00</div>
-        <div className="">Фактическое: {WorkedTime ? WorkedTime : '00:00:00'}</div>
+        <div className="">Ожидаемое: {EstimatedTime}</div>
+        <div className="">Фактическое: {WorkedTime}</div>
       </div>
 
 
