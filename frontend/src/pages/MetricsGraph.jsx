@@ -61,8 +61,8 @@ const MetricsGraph = () => {
     }
 
     return (
-        <div style={{ textAlign: 'center', marginTop: '20px' }}>
-            <div style={{ display: 'flex', alignContent: 'center', justifyContent: 'space-between' }}><h2>Средние показатели по операторам</h2> <h2><Link to="/">Календарь</Link></h2></div>
+        <div style={{ textAlign: 'center', marginTop: '20px', gap: '40px' }}>
+            <div style={{ display: 'flex', alignContent: 'center', justifyContent: 'space-between' }}><h2>Наибольшие показатели по операторам</h2> <h2><Link to="/">Календарь</Link></h2></div>
             <ResponsiveContainer width="100%" height={400}>
                 <PieChart>
                     <Pie
@@ -82,7 +82,7 @@ const MetricsGraph = () => {
                     <Tooltip />
                     <Legend />
                     <Text x={200} y={20} textAnchor="middle" dominantBaseline="middle">
-                        Среднее количество входящих звонков
+                        Наибольшее количество входящих звонков
                     </Text>
                 </PieChart>
             </ResponsiveContainer>

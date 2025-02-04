@@ -158,7 +158,7 @@ const ProjectsPage = () => {
 
   return (
     <div className="App">
-      <div className='header-contents'>
+      <div className='header-contents-projects'>
         <span>Проекты</span>
         <Link to="/">Календарь</Link>
       </div>

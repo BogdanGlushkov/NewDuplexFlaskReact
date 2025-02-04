@@ -79,6 +79,14 @@
   justify-content: space-between;
 }
 
+.header-contents-projects {
+  align-items: center;
+  display: flex;
+  margin-top: 10px;
+  max-width: 700px;
+  align-self: center
+}
+
 .header-contents span {
   font-weight: 400;
   font-size: 16px;
@@ -93,16 +101,8 @@
   display: flex;
   flex-direction: row;
   margin-top: 15px;
-}
-
-.left-content {
-  margin: 0 40px;
-}
-
-.right-content {
-  position: absolute;
-  top: 80px;
-  right: 150px;
+  gap: 50px;
+  align-self: center;
 }
 
 .project-filter {
