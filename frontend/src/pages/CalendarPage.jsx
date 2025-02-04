@@ -10,7 +10,7 @@ import { BASE_URL } from '../App';
 import { Link } from 'react-router-dom';
 
 const generateSchedule = (date) => {
-  const daysInMonth = getDaysInMonth(date);
+  const daysInMonth = getDaysInMonth(date) + 1;
   const startDate = startOfMonth(date);
   return Array.from({ length: daysInMonth }, (_, day) => ({
     date: addDays(startDate, day),
@@ -21,7 +21,7 @@ const generateSchedule = (date) => {
 };
 
 const fillEmptySchedule = (existingSchedule, date) => {
-  const daysInMonth = getDaysInMonth(date);
+  const daysInMonth = getDaysInMonth(date) + 1;
   document.documentElement.style.setProperty('--days-in-month', daysInMonth);
   const generatedSchedule = generateSchedule(date);
   const filledSchedule = generatedSchedule.map(generatedDay => {
@@ -175,7 +175,7 @@ const CalendarPage = ({ userName, userRole }) => {
   };
 
   const setCSSDaysInMonth = (date) => {
-    const daysInMonth = getDaysInMonth(date);
+    const daysInMonth = getDaysInMonth(date) + 1;
     document.documentElement.style.setProperty('--days-in-month', daysInMonth);
   };
 
