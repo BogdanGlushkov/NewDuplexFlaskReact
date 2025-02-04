@@ -1,87 +1,89 @@
 .schedule-settings {
-    position: fixed;
-    right: 0%;
-    background-color: white;
-    padding: 20px;
-    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
-    border-radius: 8px;
-    z-index: 1000;
+  position: fixed;
+  right: 0%;
+  background-color: white;
+  padding: 20px;
+  box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+  border-radius: 8px;
+  z-index: 1000;
 
-    height: 100%;
-    width: 15%;
-  }
-  
-  .schedule-settings h2 {
-    user-select: none;
-    margin-top: 0;
-  }
-  
-  .schedule-settings label {
-    margin-top: 15px;
-    display: block;
-    user-select: none;
-    color: lightslategray;
-  }
-  
-  .schedule-settings input {
-    display: block;
-    margin: 5px;
-  }
-  
-  .schedule-settings button {
-    margin-right: 10px;
-  }
+  height: 100%;
+  min-width: 250px;
+  width: 15%;
+}
 
-  .schedule-settings p {
-    user-select: none;
-  }
-  
-  .time-change {
-    display: flex;
-    flex-direction: row;
+.schedule-settings h2 {
+  user-select: none;
+  margin-top: 0;
+}
 
-    align-items: center;
-  }
+.schedule-settings label {
+  margin-top: 15px;
+  display: block;
+  user-select: none;
+  color: lightslategray;
+}
 
-  .btn-bottom {
-    position: fixed;
-    top: 60%;
-  }
+.schedule-settings input {
+  display: block;
+  margin: 5px;
+}
 
-  .working-days {
-    display: flex;
-    flex-direction: row;
-  }
+.schedule-settings button {
+  margin-right: 10px;
+}
 
-  .working-days label {
-    margin: 0;
-    align-items: center;
-    display: flex;
-    flex-direction: column;
-  }
+.schedule-settings p {
+  user-select: none;
+}
 
-  .break-time label {
-    margin-top: 6px;
-  }
-  .break-time span {
-    user-select: none;
-    cursor: pointer;
-  }
-  .AddBreak {
-    user-select: none;
-    cursor: pointer;
-    color: lightslategray;
-  }
+.time-change {
+  display: flex;
+  flex-direction: row;
 
-  .interval {
-    display: flex;
-    align-items: center;
-  }
+  align-items: center;
+}
 
-  .interval input {
-    width: 40px;
-  }
+.btn-bottom {
+  margin-top: 30px;
+}
 
-  .interval p {
-    color: lightslategray;
-  }
+.working-days {
+  display: flex;
+  flex-direction: row;
+}
+
+.working-days label {
+  margin: 0;
+  align-items: center;
+  display: flex;
+  flex-direction: column;
+}
+
+.break-time label {
+  margin-top: 6px;
+}
+
+.break-time span {
+  user-select: none;
+  cursor: pointer;
+}
+
+.AddBreak {
+  user-select: none;
+  cursor: pointer;
+  color: lightslategray;
+}
+
+.interval {
+  display: flex;
+  align-items: center;
+}
+
+.interval input {
+  width: 40px;
+}
+
+.interval p {
+  color: lightslategray;
+}

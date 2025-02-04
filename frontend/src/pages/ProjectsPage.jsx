@@ -159,9 +159,9 @@ const ProjectsPage = () => {
   return (
     <div className="App">
       <div className='header-contents'>
-            <span>Проекты</span>
-            <Link to="/">Календарь</Link>
-          </div>
+        <span>Проекты</span>
+        <Link to="/">Календарь</Link>
+      </div>
       <div className="container-flex">
         <div className='left-content'>
           <div>
@@ -185,7 +185,7 @@ const ProjectsPage = () => {
         </div>
 
         <div className='right-content'>
-          {!showForm &&<button onClick={() => { setShowForm(true); setSelectedProject(null); }}>Добавить проект</button>}
+          {!showForm && <button onClick={() => { setShowForm(true); setSelectedProject(null); }}>Добавить проект</button>}
           {showForm && (
             <div className='Add_project'>
               <label>Название проекта</label>
@@ -205,16 +205,18 @@ const ProjectsPage = () => {
               {selectedProject && (
                 <div>
                   <h3>Выберите пользователей:</h3>
-                  {users.map(user => (
-                    <div key={user.id}>
-                      <input
-                        type="checkbox"
-                        checked={selectedUsers.includes(user.id)}
-                        onChange={() => handleUserChange(user.id)}
-                      />
-                      <label>{user.name}</label>
-                    </div>
-                  ))}
+                  <div className='overflow-selector'>
+                    {users.map(user => (
+                      <div key={user.id} className='input_operators_PR'>
+                        <input
+                          type="checkbox"
+                          checked={selectedUsers.includes(user.id)}
+                          onChange={() => handleUserChange(user.id)}
+                        />
+                        <label>{user.name}</label>
+                      </div>
+                    ))}
+                  </div>
                 </div>
               )}
               <button onClick={selectedProject ? handleUpdateProject : handleAddProject}>
