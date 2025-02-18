@@ -4,7 +4,7 @@ import '../css/UserSchedule.css';
 import { isSameDay } from 'date-fns';
 import { BASE_URL } from '../App';
 
-const UserSchedule = ({ user, daysInMonth, onCellClick, selectedCells = [], currentType, currentTime, showPrefix, currentDate }) => {
+const UserSchedule = ({ user, daysInMonth, onCellClick, selectedCells = [], currentType, currentTime, showPrefix, showBreaks, currentDate }) => {
 
   const [WorkedTime, SetWorkedTime] = useState('00:00:00');
   const [EstimatedTime, SetEstimatedTime] = useState('00:00:00');
@@ -75,7 +75,7 @@ const UserSchedule = ({ user, daysInMonth, onCellClick, selectedCells = [], curr
     <div className="user-row">
       <div className="user-name">{showPrefix ? user.prefix : user.name}</div>
       {daysInMonth.map(date => {
-        const shift = user.schedule.find(s => isSameDay(s.date, date))?.shift || ' ';
+        const shift = showBreaks ? JSON.parse(user.schedule.find(s => isSameDay(s.date, date))?.breaks)[0] || 'Нет' : user.schedule.find(s => isSameDay(s.date, date))?.shift || ' ';
         const type = user.schedule.find(s => isSameDay(s.date, date))?.type || ' ';
         const isSelected = selectedCells.some(cell => isSameDay(cell.date, date) && cell.user === user.name);
         return (

@@ -48,6 +48,7 @@ const CalendarPage = ({ userName, userRole }) => {
   const [currentInterval, setCurrentInterval] = useState({ intStart: 2, intEnd: 2 });
   const [currentTemplate, setCurrentTemplate] = useState('Без шаблона');
   const [showPrefix, setShowPrefix] = useState(true); // Added state for prefix visibility
+  const [showBreaks, setShowBreaks] = useState(false); // Added state for prefix visibility
 
   useEffect(() => {
     const fetchProjects = async () => {
@@ -225,6 +226,16 @@ const CalendarPage = ({ userName, userRole }) => {
               onChange={(e) => setShowPrefix(e.target.checked)}
             />
           </div>
+          <div className="project-filter">
+            <label>
+              Показать Перерывы:
+            </label>
+            <input
+              type="checkbox"
+              checked={showBreaks}
+              onChange={(e) => setShowBreaks(e.target.checked)}
+            />
+          </div>
         </div>
         <div className='right-content-header'>
           {/* <Link to='/breaks'>Перерывы</Link> */}
@@ -250,6 +261,7 @@ const CalendarPage = ({ userName, userRole }) => {
         currentTime={currentTime}
         currentDate={currentDate}
         showPrefix={showPrefix}
+        showBreaks={showBreaks}
       />
       {showSettings && (userRole === 'admin') && (
         <ScheduleSettings

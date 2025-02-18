@@ -4,7 +4,7 @@ import { format, eachDayOfInterval, startOfMonth, endOfMonth } from 'date-fns';
 import { ru } from 'date-fns/locale'
 import '../css/CalendarGrid.css';
 
-const CalendarGrid = ({ users, onCellClick, selectedCells, currentType, currentTime, currentDate, showPrefix }) => {
+const CalendarGrid = ({ users, onCellClick, selectedCells, currentType, currentTime, currentDate, showPrefix, showBreaks }) => {
 
   const daysArray = eachDayOfInterval({
     start: startOfMonth(currentDate),
@@ -37,6 +37,7 @@ const CalendarGrid = ({ users, onCellClick, selectedCells, currentType, currentT
           currentType={currentType}
           currentTime={currentTime}
           showPrefix={showPrefix}
+          showBreaks={showBreaks}
           currentDate={currentDate}
         />
       ))}

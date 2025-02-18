@@ -21,7 +21,7 @@ const MetricsGraph = () => {
         const endOfMonth = new Date(now.getFullYear(), now.getMonth() + 1, 0);
 
         const formatDate = (date) =>
-            date.toISOString().split('T')[0]; // Формат YYYY-MM-DD
+            date.toISOString().split('T')[0];
 
         return {
             start_date: formatDate(startOfMonth),
