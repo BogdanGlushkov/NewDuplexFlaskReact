@@ -75,7 +75,8 @@ const UserSchedule = ({ user, daysInMonth, onCellClick, selectedCells = [], curr
     <div className="user-row">
       <div className="user-name">{showPrefix ? user.prefix : user.name}</div>
       {daysInMonth.map(date => {
-        const shift = showBreaks ? JSON.parse(user.schedule.find(s => isSameDay(s.date, date))?.breaks)[0] || 'Нет' : user.schedule.find(s => isSameDay(s.date, date))?.shift || ' ';
+        const breaks = user.schedule.find(s => isSameDay(s.date, date))?.breaks
+        const shift = showBreaks ? (breaks && breaks !== '' ? JSON.parse(breaks)[0] : 'Нет') : user.schedule.find(s => isSameDay(s.date, date))?.shift || ' ';
         const type = user.schedule.find(s => isSameDay(s.date, date))?.type || ' ';
         const isSelected = selectedCells.some(cell => isSameDay(cell.date, date) && cell.user === user.name);
         return (
