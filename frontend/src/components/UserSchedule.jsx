@@ -75,8 +75,25 @@ const UserSchedule = ({ user, daysInMonth, onCellClick, selectedCells = [], curr
     <div className="user-row">
       <div className="user-name">{showPrefix ? user.prefix : user.name}</div>
       {daysInMonth.map(date => {
-        const breaks = user.schedule.find(s => isSameDay(s.date, date))?.breaks
-        const shift = showBreaks ? (breaks && breaks !== '' ? JSON.parse(breaks)[0] : 'Нет') : user.schedule.find(s => isSameDay(s.date, date))?.shift || ' ';
+        const shift = showBreaks
+          ? (() => {
+            const breaksString = user.schedule.find(s => isSameDay(s.date, date))?.breaks;
+
+            if (breaksString && typeof breaksString === 'string' && breaksString.trim() !== '') {
+              try {
+                const breaksArray = JSON.parse(breaksString);
+                return breaksArray[0] ? `${breaksArray[0].start} ${breaksArray[0].end}` : 'Нет';
+              } catch (e) {
+                // Handle JSON parsing errors
+                console.error("Failed to parse breaks:", e);
+                return 'Нет';
+              }
+            } else {
+              // Handle empty or invalid breaks
+              return 'Нет';
+            }
+          })()
+          : user.schedule.find(s => isSameDay(s.date, date))?.shift || ' ';
         const type = user.schedule.find(s => isSameDay(s.date, date))?.type || ' ';
         const isSelected = selectedCells.some(cell => isSameDay(cell.date, date) && cell.user === user.name);
         return (
